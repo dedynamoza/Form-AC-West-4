@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Data Sales Lapangan (Modern)</title>
+    <title>Prospect Daily</title>
     <!-- Memuat Tailwind CSS untuk styling modern dan responsif -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -135,8 +135,8 @@ input:focus, select:focus, textarea:focus {
     <div class="max-w-3xl mx-auto">
         <!-- Header Aplikasi -->
         <header class="text-center mb-8 p-4 bg-white/20 backdrop-blur-sm rounded-xl">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Input Data Prospect Sales</h1>
-            <p class="text-sm text-gray-200 mt-1">Aplikasi Mobile Friendly untuk Anak Lapangan</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Daily Prospect</h1>
+            <p class="text-sm text-gray-200 mt-1">Work Hard, Play Hard</p>
         </header>
 
         <!-- Area Form Dinamis -->
@@ -149,7 +149,7 @@ input:focus, select:focus, textarea:focus {
             <!-- Tombol Tambah Data -->
 <button type="button" id="addButton" 
 class="w-full py-4 px-4 bg-teal-500 text-white font-semibold rounded-xl hover:bg-teal-600 transition duration-300 shadow-md touch-target mb-4 text-base">
-+ Tambah Data Prospect
+Tambah Data Prospect
 </button>
 
 <!-- Tombol Simpan (Save) Utama -->
@@ -202,43 +202,43 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         // Data Hierarki Lokasi: Region -> Province -> City/Regency -> Branch
         // Struktur data diubah menjadi objek untuk pencarian dan pemetaan yang efisien
         const LOCATION_DATA = [
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "METRO", branch: "Branch Metro Hadimulyo Barat" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "BANDAR LAMPUNG", branch: "Branch Bandar Lampung Tanjung Senang" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "LAMPUNG TENGAH", branch: "Branch Lampung Tengah Bandar Jaya" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "LAMPUNG SELATAN", branch: "Branch Lampung Selatan Kalianda" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "BANDAR LAMPUNG", branch: "Branch Bandar Lampung Rawa Laut" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "BANDAR LAMPUNG", branch: "Branch Bandar Lampung Rajabasa" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "MESUJI", branch: "Branch Mesuji Umbulan Tedunggeram" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "BANDAR LAMPUNG", branch: "Branch Bandar Bandar Lampung Campang Raya" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "TULANG BAWANG", branch: "Branch Tulang Bawang Barat Banjar Agung" },
-            { region: "RO 17 Bandar Lampung", province: "LAMPUNG", city: "TULANG BAWANG", branch: "Branch Tulang Bawang Barat Menggala" },
-            // RO JAMBI
-            { region: "RO 16 Jambi", province: "JAMBI", city: "JAMBI", branch: "Branch Jambi Kenali Asam Bawah" },
-            { region: "RO 16 Jambi", province: "JAMBI", city: "JAMBI", branch: "Branch Jambi Kenali Besar" },
-            { region: "RO 16 Jambi", province: "JAMBI", city: "JAMBI", branch: "Branch Jambi Thehok" },
-            { region: "RO 16 Jambi", province: "BENGKULU", city: "BENGKULU", branch: "Branch Bengkulu Jembatan Kecil" },
-            { region: "RO 16 Jambi", province: "JAMBI", city: "MUARO JAMBI", branch: "Branch Muaro Jambi Sengeti" },
-            { region: "RO 16 Jambi", province: "JAMBI", city: "TANJUNG JABUNG BARAT", branch: "Branch Tanjung Jabung Barat Kuala Tungkal" },
-            { region: "RO 16 Jambi", province: "JAMBI", city: "TANJUNG JABUNG BARAT", branch: "Branch Tanjung Jabung Barat Merlung" },
-            // RO PALEMBANG
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "BANYUASIN", branch: "Branch Banyuasin Pangkalan Balai" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "BANYUASIN", branch: "Branch Banyuasin Betung" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "BANYUASIN", branch: "Branch Banyuasin Sungsang" },
-            { region: "RO 02 Palembang", province: "BANGKA BELITUNG", city: "BANGKA", branch: "Branch Bangka Sungai Liat" },
-            { region: "RO 02 Palembang", province: "BANGKA BELITUNG", city: "BANGKA BARAT", branch: "Branch Bangka Barat Kelapa" },
-            { region: "RO 02 Palembang", province: "BANGKA BELITUNG", city: "BANGKA BARAT", branch: "Branch Bangka Barat Muntok" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "MUSI BANYUASIN", branch: "Branch Musi Banyuasin Bayung Lecir" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "MUSI BANYUASIN", branch: "Branch Musi Banyuasin Pangkalan Gresik" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "MUSI BANYUASIN", branch: "Branch Musi Banyuasin Sungai Lilin" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "OGAN KOMERING ILIR", branch: "Branch Ogan Komering Ilir Kayu Agung" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "OGAN KOMERING ILIR", branch: "Branch Ogan Komering Ilir Tugu Mulyo" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "PALEMBANG", branch: "Branch Palembang 8 Ulu" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "PALEMBANG", branch: "Branch Palembang Kalidoni" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "PALEMBANG", branch: "Branch Palembang Karya Jaya" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "PALEMBANG", branch: "Branch Palembang Sekip Jaya" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "PALEMBANG", branch: "Branch Palembang Sukamaju" },
-            { region: "RO 02 Palembang", province: "SUMATRA SELATAN", city: "PALEMBANG", branch: "Branch Palembang Sukodadi" },
-            { region: "RO 02 Palembang", province: "BANGKA BELITUNG", city: "PANGKAL PINANG", branch: "Branch Pangkal Pinang Batin Tikal" },
+        { region: "RO 17 Bandar Lampung", province: "Lampung", city: "Metro", branch: "Branch Metro Hadimulyo Barat" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Lampung Tanjung Senang" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Lampung TENGAH", branch: "Branch Lampung Tengah Bandar Jaya" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Lampung SELATAN", branch: "Branch Lampung Selatan Kalianda" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Lampung Rawa Laut" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Lampung Rajabasa" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Mesuji", branch: "Branch Mesuji Umbulan Tedunggeram" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Bandar Lampung Campang Raya" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Tulang Bawang", branch: "Branch Tulang Bawang Barat Banjar Agung" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Tulang Bawang", branch: "Branch Tulang Bawang Barat Menggala" },
+// RO Jambi
+{ region: "RO 16 Jambi", province: "Jambi", city: "Jambi", branch: "Branch Jambi Kenali Asam Bawah" },
+{ region: "RO 16 Jambi", province: "Jambi", city: "Jambi", branch: "Branch Jambi Kenali Besar" },
+{ region: "RO 16 Jambi", province: "Jambi", city: "Jambi", branch: "Branch Jambi Thehok" },
+{ region: "RO 16 Jambi", province: "Bengkulu", city: "Bengkulu", branch: "Branch Bengkulu Jembatan Kecil" },
+{ region: "RO 16 Jambi", province: "Jambi", city: "Muaro Jambi", branch: "Branch Muaro Jambi Sengeti" },
+{ region: "RO 16 Jambi", province: "Jambi", city: "Tanjung Jabung Barat", branch: "Branch Tanjung Jabung Barat Kuala Tungkal" },
+{ region: "RO 16 Jambi", province: "Jambi", city: "Tanjung Jabung Barat,", branch: "Branch Tanjung Jabung Barat Merlung" },
+// RO Palembang
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Banyuasin", branch: "Branch Banyuasin Pangkalan Balai" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Banyuasin", branch: "Branch Banyuasin Betung" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Banyuasin", branch: "Branch Banyuasin Sungsang" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "BANGKA", branch: "Branch Bangka Sungai Liat" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "BANGKA BARAT", branch: "Branch Bangka Barat Kelapa" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "BANGKA BARAT", branch: "Branch Bangka Barat Muntok" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Musi Banyuasin", branch: "Branch Musi Banyuasin Bayung Lecir" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Musi Banyuasin", branch: "Branch Musi Banyuasin Pangkalan Gresik" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Musi Banyuasin", branch: "Branch Musi Banyuasin Sungai Lilin" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Ogan Komering Ilir", branch: "Branch Ogan Komering Ilir Kayu Agung" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Ogan Komering Ilir", branch: "Branch Ogan Komering Ilir Tugu Mulyo" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang 8 Ulu" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Kalidoni" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Karya Jaya" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Sekip Jaya" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Sukamaju" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Sukodadi" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "Pangkal Pinang", branch: "Branch Pangkal Pinang Batin Tikal" },
         ];
 
         // Data Master Sales: Branch -> Sales
@@ -278,6 +278,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Branch Jambi Kenali Asam Bawah": ["Faudi Aria Gusti", "Ferry Ferdiansyah", "Anggraini"],
             "Branch Muaro Jambi Sengeti": ["XXX", "XXxX"],
             "Branch Tanjung Jabung Barat Merlung": ["xxxxx"],
+            "Branch Tanjung Jabung Barat Kuala Tungkal": ["xxx"],
         };
 
         // Data Dropdown Statis
@@ -472,7 +473,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 <div class="data-entry-card p-4 sm:p-8 relative" id="entry-${id}" data-id="${id}">
                     <!-- Header Card -->
                     <div class="flex justify-between items-center mb-4 sm:mb-6 border-b pb-3">
-                        <h3 class="text-lg sm:text-xl font-bold text-gray-800">Prospect #${id + 1}</h3>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800">Prospect</h3>
                         ${id > 0 ? `
                             <button type="button" onclick="deleteEntry(${id})"
                                     class="py-2 px-3 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition duration-300 touch-target">
@@ -562,10 +563,10 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         
                         <!-- Subdistric -->
                         <div class="form-group">
-                            <label for="subdistric-${id}" class="block text-sm font-medium text-gray-700 mb-2">Subdistric (Kecamatan) <span class="text-red-500">*</span></label>
+                            <label for="subdistric-${id}" class="block text-sm font-medium text-gray-700 mb-2">Subdistric (Kelurahan) <span class="text-red-500">*</span></label>
                             <input type="text" id="subdistric-${id}" required
                                    oninput="this.value = toProperCase(this.value);"
-                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Nama Kecamatan">
+                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Kelurahan">
                         </div>
 
                         <!-- Isp Existing -->
