@@ -6,6 +6,10 @@
     <title>Prospect Daily</title>
     <!-- Memuat Tailwind CSS untuk styling modern dan responsif -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat jQuery dan Select2 untuk dropdown search -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         /* Mengatur font dasar dan latar belakang gradasi untuk tampilan modern */
         body {
@@ -135,8 +139,8 @@ input:focus, select:focus, textarea:focus {
     <div class="max-w-3xl mx-auto">
         <!-- Header Aplikasi -->
         <header class="text-center mb-8 p-4 bg-white/20 backdrop-blur-sm rounded-xl">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Daily Prospect</h1>
-            <p class="text-sm text-gray-200 mt-1">Work Hard, Play Hard</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">DAILY PROSPECT</h1>
+            <p class="text-sm text-gray-200 mt-1">WEST 4</p>
         </header>
 
         <!-- Area Form Dinamis -->
@@ -194,7 +198,10 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
         // Penghitung unik untuk ID setiap form (penting saat menambah/menghapus entri)
         let entryCounter = 0;
-        
+
+        // Global role variable, default AC
+        let currentRole = 'AC';
+
         // =========================================================================
         // 1. DATA MASTER LOKASI DAN SALES
         // =========================================================================
@@ -285,7 +292,137 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         const ISP_EXISTING = ["Iconnet", "Telkom", "Local Isp", "Gasnet", "My Republic", "Oxygen", "Firstmedia", "Xlhome", "Cbn", "Fibernet", "RT/RW Net", "Belum Menggunakan Internet Cable"];
         const SOURCE_OPTIONS = ["Canvassing", "Flyering", "Social Media", "Referrence", "TVC/Baligho/Banner", "Open Booth/Roadshow/Event", "Walking Store"];
         const STATUS_OPTIONS = ["Prospect", "Hot Prospect", "Deal", "Not Deal"];
-        
+
+        // Data Master untuk AE Role
+        const SEGMENTATION_OPTIONS = [
+            "Hospital & Health Service",
+            "Education",
+            "Government",
+            "Hospitality",
+            "Financial & Banking",
+            "Mining",
+            "Individu",
+            "Manufacture",
+            "IT & Telecommunication",
+            "Media & Entertainment",
+            "Trade & Services",
+            "Logistic",
+            "Property & Construction",
+            "Automotive",
+            "Food & Beverages"
+        ];
+
+        const SERVICE_OPTIONS = [
+            "Biznet Metronet 1D Rent",
+            "Biznet Metronet 2D Rent",
+            "Biznet Metronet 3D Rent",
+            "Biznet Metronet 4D Rent",
+            "Biznet Metronet 5D Rent",
+            "Biznet Metronet 1D",
+            "Biznet Metronet 2D",
+            "Biznet Metronet 3D",
+            "Biznet Metronet 4D",
+            "Biznet Metronet 5D",
+            "Biznet Dedicated Internet 80 Mbps",
+            "Biznet Dedicated Internet 100 Mbps",
+            "Biznet Dedicated Internet 120 Mbps",
+            "Biznet Dedicated Internet 160 Mbps",
+            "Biznet Dedicated Internet 200 Mbps",
+            "Biznet Dedicated Internet 240 Mbps",
+            "Biznet Dedicated Internet 280 Mbps",
+            "Biznet Dedicated Internet 320 Mbps",
+            "Biznet Dedicated Internet 360 Mbps",
+            "Biznet Dedicated Internet 400 Mbps",
+            "Biznet Dedicated Internet 500 Mbps",
+            "Biznet Dedicated Internet 600 Mbps",
+            "Biznet Dedicated Internet 700 Mbps",
+            "Biznet Dedicated Internet 800 Mbps",
+            "Biznet Dedicated Internet 900 Mbps",
+            "Biznet Dedicated Internet 1 Gbps",
+            "Biznet Dedicated Internet 1.2 Gbps",
+            "Biznet Dedicated Internet 1.6 Gbps",
+            "Biznet Dedicated Internet 2 Gbps",
+            "Biznet Dedicated Internet 3 Gbps",
+            "Biznet Dedicated Internet 4 Gbps",
+            "Biznet Dedicated Internet 10 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 160 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 200 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 240 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 280 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 320 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 360 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 400 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 500 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 600 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 700 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 800 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 900 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 1 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 1.2 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 1.6 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 2 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 3 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 4 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 10 Gbps",
+            "Biznet Dedicated Hospitalitynet 80 Mbps",
+            "Biznet Dedicated Hospitalitynet 100 Mbps",
+            "Biznet Dedicated Hospitalitynet 120 Mbps",
+            "Biznet Dedicated Hospitalitynet 160 Mbps",
+            "Biznet Dedicated Hospitalitynet 200 Mbps",
+            "Biznet Dedicated Hospitalitynet 240 Mbps",
+            "Biznet Dedicated Hospitalitynet 280 Mbps",
+            "Biznet Dedicated Hospitalitynet 320 Mbps",
+            "Biznet Dedicated Hospitalitynet 360 Mbps",
+            "Biznet Dedicated Hospitalitynet 400 Mbps",
+            "Biznet Dedicated Hospitalitynet 500 Mbps",
+            "Biznet Dedicated Hospitalitynet 600 Mbps",
+            "Biznet Dedicated Hospitalitynet 700 Mbps",
+            "Biznet Dedicated Hospitalitynet 800 Mbps",
+            "Biznet Dedicated Hospitalitynet 900 Mbps",
+            "Biznet Dedicated Hospitalitynet 1 Gbps",
+            "Biznet Dedicated Hospitalitynet 1.2 Gbps",
+            "Biznet Dedicated Hospitalitynet 1.6 Gbps",
+            "Biznet Dedicated Internet LKPP 60 Mbps",
+            "Biznet Dedicated Internet LKPP 80 Mbps",
+            "Biznet Dedicated Internet LKPP 100 Mbps",
+            "Biznet Dedicated Internet LKPP 120 Mbps",
+            "Biznet Dedicated Internet LKPP 140 Mbps",
+            "Biznet Dedicated Internet LKPP 160 Mbps",
+            "Biznet Dedicated Internet LKPP 180 Mbps",
+            "Biznet Dedicated Internet LKPP 200 Mbps",
+            "Biznet Dedicated Internet LKPP 250 Mbps",
+            "Biznet Dedicated Internet LKPP 300 Mbps",
+            "Biznet Dedicated Internet LKPP 350 Mbps",
+            "Biznet Dedicated Internet LKPP 400 Mbps",
+            "Biznet Dedicated Internet LKPP 450 Mbps",
+            "Biznet Dedicated Internet LKPP 500 Mbps",
+            "Biznet Dedicated Internet LKPP 600 Mbps",
+            "Biznet Dedicated Internet LKPP 700 Mbps",
+            "Biznet Dedicated Internet LKPP 800 Mbps",
+            "Biznet Dedicated Internet LKPP 900 Mbps",
+            "Biznet Dedicated Internet LKPP 1 Gbps",
+            "Biznet Dedicated Internet LKPP 1.2 Gbps",
+            "Biznet Dedicated Internet LKPP 1.6 Mbps",
+            "Biznet Dedicated Internet LKPP 2 Gbps",
+            "Biznet Dedicated Internet LKPP 10 Gbps",
+            "100 Gigabit EtherPort (100 Gbps)",
+            "10 Gigabit EtherPort (10 Gbps)",
+            "1 Gigabit EtherPort (1 Gbps)"
+        ];
+
+        const REVENUE_MAP = {
+            "Biznet Metronet 1D Rent": "1,050,000",
+            "Biznet Metronet 2D Rent": "1,750,000",
+            "Biznet Metronet 3D Rent": "2,750,000",
+            "Biznet Metronet 4D Rent": "6,550,000",
+            "Biznet Metronet 5D Rent": "12,550,000",
+            "Biznet Metronet 1D": "1,000,000",
+            "Biznet Metronet 2D": "1,700,000",
+            "Biznet Metronet 3D": "2,700,000",
+            "Biznet Metronet 4D": "6,500,000",
+            "Biznet Metronet 5D": "12,500,000"
+        };
+
         // =========================================================================
         // 2. FUNGSI UTILITY
         // =========================================================================
@@ -312,8 +449,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
          */
         function populateDropdown(selectElement, options, placeholder, disabledValue = "") {
             // Bersihkan opsi yang sudah ada, kecuali placeholder jika sudah ada
-            selectElement.innerHTML = ''; 
-            
+            selectElement.innerHTML = '';
+
             // Tambahkan opsi placeholder default
             const defaultOption = document.createElement('option');
             defaultOption.value = disabledValue; // Nilai kosong atau nilai nonaktif
@@ -328,6 +465,117 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 option.value = optionText;
                 option.textContent = optionText;
                 selectElement.appendChild(option);
+            });
+        }
+
+        /**
+         * Toggle role antara AC dan AE.
+         * @param {number} entryId - ID entri yang akan diubah.
+         */
+        function toggleRole(entryId) {
+            const roleSwitcher = document.getElementById(`role-switcher-${entryId}`);
+            const acLabel = document.getElementById(`ac-label-${entryId}`);
+            const aeLabel = document.getElementById(`ae-label-${entryId}`);
+
+            if (currentRole === 'AC') {
+                currentRole = 'AE';
+                acLabel.style.color = 'black';
+                aeLabel.style.color = 'green';
+            } else {
+                currentRole = 'AC';
+                acLabel.style.color = 'green';
+                aeLabel.style.color = 'black';
+            }
+
+            // Update additional fields untuk semua entri
+            const entries = document.querySelectorAll('.data-entry-card');
+            entries.forEach(entry => {
+                const id = entry.getAttribute('data-id');
+                updateAdditionalFields(id);
+            });
+        }
+
+        /**
+         * Update additional fields berdasarkan role dan status.
+         * @param {number} entryId - ID entri.
+         */
+        function updateAdditionalFields(entryId) {
+            const additionalFields = document.getElementById(`additional-fields-${entryId}`);
+            const statusSelect = document.getElementById(`status-${entryId}`);
+            const selectedStatus = statusSelect.value;
+
+            additionalFields.innerHTML = '';
+
+            if (currentRole === 'AE') {
+                // Untuk semua status, tambah Segmentation
+                let html = `
+                    <div class="form-group">
+                        <label for="segmentation-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Segmentation <span class="text-red-500">*</span></label>
+                        <select id="segmentation-${entryId}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
+                            <!-- Opsi diisi oleh JS -->
+                        </select>
+                    </div>
+                `;
+
+                if (selectedStatus === 'Deal') {
+                    // Tambah Service dan Revenue di atas Segmentation
+                    html = `
+                        <div class="form-group">
+                            <label for="service-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Service <span class="text-red-500">*</span></label>
+                            <select id="service-${entryId}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
+                                <!-- Opsi diisi oleh JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="revenue-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Revenue</label>
+                            <input type="text" id="revenue-${entryId}" class="w-full border-gray-300 rounded-lg p-3 touch-target" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        </div>
+                    ` + html;
+
+                    // Populate service dropdown
+                    setTimeout(() => {
+                        populateDropdown(document.getElementById(`service-${entryId}`), SERVICE_OPTIONS, "Pilih Service...", "");
+                        initializeSelect2(entryId);
+                        document.getElementById(`service-${entryId}`).addEventListener('change', () => updateRevenue(entryId));
+                    }, 0);
+                }
+
+                additionalFields.innerHTML = html;
+
+                // Populate segmentation dropdown
+                setTimeout(() => {
+                    populateDropdown(document.getElementById(`segmentation-${entryId}`), SEGMENTATION_OPTIONS, "Pilih Segmentation...", "");
+                }, 0);
+            }
+        }
+
+        /**
+         * Update revenue berdasarkan service yang dipilih.
+         * @param {number} entryId - ID entri.
+         */
+        function updateRevenue(entryId) {
+            const serviceSelect = document.getElementById(`service-${entryId}`);
+            const revenueInput = document.getElementById(`revenue-${entryId}`);
+            const selectedService = serviceSelect.value;
+
+            if (selectedService.startsWith('Biznet Dedicated') || selectedService.includes('EtherPort')) {
+                revenueInput.value = '';
+                revenueInput.readOnly = false;
+                revenueInput.placeholder = 'Masukkan Revenue';
+            } else {
+                revenueInput.value = REVENUE_MAP[selectedService] || '';
+                revenueInput.readOnly = true;
+            }
+        }
+
+        /**
+         * Inisialisasi Select2 untuk service dropdown.
+         * @param {number} entryId - ID entri.
+         */
+        function initializeSelect2(entryId) {
+            $(`#service-${entryId}`).select2({
+                placeholder: "Pilih Service...",
+                allowClear: true
             });
         }
         
@@ -474,12 +722,22 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     <!-- Header Card -->
                     <div class="flex justify-between items-center mb-4 sm:mb-6 border-b pb-3">
                         <h3 class="text-lg sm:text-xl font-bold text-gray-800">Prospect</h3>
-                        ${id > 0 ? `
-                            <button type="button" onclick="deleteEntry(${id})"
-                                    class="py-2 px-3 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition duration-300 touch-target">
-                                Hapus
-                            </button>
-                        ` : ''}
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-2">
+                                <span id="ac-label-${id}" class="font-bold" style="color: green;">AC</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="role-switcher-${id}" class="sr-only peer" onchange="toggleRole(${id})">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                                <span id="ae-label-${id}" class="font-bold" style="color: black;">AE</span>
+                            </div>
+                            ${id > 0 ? `
+                                <button type="button" onclick="deleteEntry(${id})"
+                                        class="py-2 px-3 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition duration-300 touch-target">
+                                    Hapus
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
 
                     <div class="space-y-4 sm:space-y-6">
@@ -592,6 +850,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
+
+                        <!-- Additional Fields for AE Role -->
+                        <div id="additional-fields-${id}"></div>
                     </div>
                 </div>
             `;
@@ -611,12 +872,15 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             
             // Ambil elemen yang baru dibuat
             const newEntry = document.getElementById(`entry-${newId}`);
-            
+
             // Isi dropdown statis pada entri baru
             const regionSelect = newEntry.querySelector(`#region-${newId}`);
             const ispSelect = newEntry.querySelector(`#ispExisting-${newId}`);
             const sourceSelect = newEntry.querySelector(`#source-${newId}`);
             const statusSelect = newEntry.querySelector(`#status-${newId}`);
+
+            // Update additional fields untuk entri baru
+            updateAdditionalFields(newId);
 
             // 1. Inisialisasi Region (Wajib)
             populateDropdown(regionSelect, getUniqueOptions('region'), "Pilih Region...", "");
@@ -655,6 +919,11 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     field.addEventListener('input', updateSaveButtonStatus);
                 }
             });
+
+            // Listener untuk status change untuk update additional fields
+            const statusSelectForAdditional = newEntry.querySelector(`#status-${newId}`);
+            statusSelectForAdditional.addEventListener('change', () => updateAdditionalFields(newId));
+
             // --- AKHIR PERUBAHAN UTAMA ---
             
             // Perbarui status tombol Simpan
@@ -809,6 +1078,10 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     MonthlyFee: document.getElementById(`monthlyFee-${entryId}`).value || 'N/A', // Non-mandatory
                     Source: document.getElementById(`source-${entryId}`).value,
                     Status: document.getElementById(`status-${entryId}`).value,
+                    Role: currentRole,
+                    Segmentation: document.getElementById(`segmentation-${entryId}`)?.value || '',
+                    Service: document.getElementById(`service-${entryId}`)?.value || '',
+                    Revenue: document.getElementById(`revenue-${entryId}`)?.value || '',
                 };
                 data.push(entryData);
             });
@@ -883,6 +1156,14 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         // Tambahkan entri pertama saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             addEntry();
+
+            // Set default role labels
+            const firstEntry = document.querySelector('.data-entry-card');
+            if (firstEntry) {
+                const firstId = firstEntry.getAttribute('data-id');
+                document.getElementById(`ac-label-${firstId}`).style.color = 'green';
+                document.getElementById(`ae-label-${firstId}`).style.color = 'black';
+            }
         });
                 // =========================================================================
         // 8. EVENT LISTENER UNTUK TOMBOL TAMBAH DATA
