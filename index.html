@@ -26,6 +26,108 @@
             border-color: #4c68d7; /* Warna fokus disesuaikan dengan gradasi */
             box-shadow: 0 0 0 3px rgba(76, 104, 215, 0.3);
         }
+        /* Mobile Optimization */
+@media (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+        background: linear-gradient(135deg, #4c68d7 0%, #7f52b8 100%);
+        min-height: 100vh;
+    }
+    
+    .data-entry-card {
+        margin: 0.5rem 0;
+        padding: 1.5rem 1rem;
+        border-radius: 0.75rem;
+    }
+    
+    /* Improve touch targets */
+    input, select, textarea, button {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+        min-height: 44px; /* Minimum touch target size */
+    }
+    
+    /* Better spacing for mobile */
+    .grid.grid-cols-1.md\:grid-cols-2 {
+        gap: 1rem;
+    }
+    
+    /* Header adjustments */
+    header {
+        margin-bottom: 1.5rem;
+        padding: 1.5rem 1rem;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+        line-height: 1.2;
+    }
+    
+    /* Button improvements */
+    button {
+        padding: 1rem 0.75rem;
+        font-weight: 600;
+    }
+    
+    /* Form element improvements */
+    .data-entry-card .grid > div {
+        margin-bottom: 0.75rem;
+    }
+    
+    /* Modal improvements */
+    #messageModal, #confirmModal {
+        padding: 1rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+    
+    #messageModal > div, #confirmModal > div {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+}
+
+/* Additional mobile-specific improvements */
+@media (max-width: 480px) {
+    .data-entry-card {
+        padding: 1.25rem 0.75rem;
+    }
+    
+    /* Make labels more prominent */
+    label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Better input spacing */
+    input, select {
+        padding: 0.75rem;
+    }
+    
+    /* Improve card header */
+    .data-entry-card h3 {
+        font-size: 1.125rem;
+    }
+}
+
+/* Prevent horizontal scrolling */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Better focus states for touch */
+input:focus, select:focus, textarea:focus {
+    border-color: #4c68d7;
+    box-shadow: 0 0 0 3px rgba(76, 104, 215, 0.1);
+    outline: none;
+}
+
+/* Smooth transitions */
+.data-entry-card, button, input, select {
+    transition: all 0.2s ease-in-out;
+}
     </style>
 </head>
 <body class="p-4 sm:p-8">
