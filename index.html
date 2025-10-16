@@ -476,15 +476,18 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             const roleSwitcher = document.getElementById(`role-switcher-${entryId}`);
             const acLabel = document.getElementById(`ac-label-${entryId}`);
             const aeLabel = document.getElementById(`ae-label-${entryId}`);
+            const headerTitle = document.querySelector('header h1');
 
             if (currentRole === 'AC') {
                 currentRole = 'AE';
                 acLabel.style.color = 'black';
                 aeLabel.style.color = 'green';
+                headerTitle.textContent = 'B2B PROSPECT';
             } else {
                 currentRole = 'AC';
                 acLabel.style.color = 'green';
                 aeLabel.style.color = 'black';
+                headerTitle.textContent = 'DAILY PROSPECT';
             }
 
             // Update additional fields untuk semua entri
@@ -518,7 +521,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 `;
 
                 if (selectedStatus === 'Deal') {
-                    // Tambah Service dan Revenue di atas Segmentation
+                    // Tambah Service di atas Segmentation (Revenue akan ditambahkan secara dinamis setelah Service dipilih)
                     html = `
                         <div class="form-group">
                             <label for="service-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Service <span class="text-red-500">*</span></label>
@@ -526,17 +529,13 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="revenue-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Revenue</label>
-                            <input type="text" id="revenue-${entryId}" class="w-full border-gray-300 rounded-lg p-3 touch-target" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                        </div>
                     ` + html;
 
                     // Populate service dropdown
                     setTimeout(() => {
                         populateDropdown(document.getElementById(`service-${entryId}`), SERVICE_OPTIONS, "Pilih Service...", "");
                         initializeSelect2(entryId);
-                        document.getElementById(`service-${entryId}`).addEventListener('change', () => updateRevenue(entryId));
+                        $(`#service-${entryId}`).on('select2:select', () => updateRevenue(entryId));
                     }, 0);
                 }
 
@@ -555,16 +554,35 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
          */
         function updateRevenue(entryId) {
             const serviceSelect = document.getElementById(`service-${entryId}`);
-            const revenueInput = document.getElementById(`revenue-${entryId}`);
             const selectedService = serviceSelect.value;
+            const additionalFields = document.getElementById(`additional-fields-${entryId}`);
+            const serviceFormGroup = serviceSelect.closest('.form-group');
 
-            if (selectedService.startsWith('Biznet Dedicated') || selectedService.includes('EtherPort')) {
-                revenueInput.value = '';
-                revenueInput.readOnly = false;
-                revenueInput.placeholder = 'Masukkan Revenue';
-            } else {
-                revenueInput.value = REVENUE_MAP[selectedService] || '';
-                revenueInput.readOnly = true;
+            // Remove existing revenue field if it exists
+            const existingRevenue = document.getElementById(`revenue-${entryId}`);
+            if (existingRevenue) {
+                existingRevenue.closest('.form-group').remove();
+            }
+
+            if (selectedService) {
+                // Add Revenue field below Service
+                const revenueHtml = `
+                    <div class="form-group">
+                        <label for="revenue-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Revenue</label>
+                        <input type="text" id="revenue-${entryId}" class="w-full border-gray-300 rounded-lg p-3 touch-target" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
+                `;
+                serviceFormGroup.insertAdjacentHTML('afterend', revenueHtml);
+
+                const revenueInput = document.getElementById(`revenue-${entryId}`);
+                if (selectedService.startsWith('Biznet Dedicated') || selectedService.includes('EtherPort')) {
+                    revenueInput.value = '';
+                    revenueInput.readOnly = false;
+                    revenueInput.placeholder = 'Masukkan Revenue';
+                } else {
+                    revenueInput.value = REVENUE_MAP[selectedService] || '';
+                    revenueInput.readOnly = true;
+                }
             }
         }
 
