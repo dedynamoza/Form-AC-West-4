@@ -147,21 +147,20 @@ input:focus, select:focus, textarea:focus {
             </div>
 
             <!-- Tombol Tambah Data -->
-            <button type="button" id="addButton" 
-                    class="w-full py-3 px-4 bg-teal-500 text-white font-semibold rounded-xl hover:bg-teal-600 transition duration-300 shadow-md">
-                + Add Prospect
-            </button>
+<button type="button" id="addButton" 
+class="w-full py-4 px-4 bg-teal-500 text-white font-semibold rounded-xl hover:bg-teal-600 transition duration-300 shadow-md touch-target mb-4 text-base">
++ Tambah Data Prospect
+</button>
 
-            <!-- Tombol Simpan (Save) Utama -->
-            <button type="submit" id="saveButton" disabled
-                    class="w-full py-4 px-4 bg-green-600 text-white font-bold text-lg rounded-xl hover:bg-green-700 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                <span id="saveText">SIMPAN SEMUA DATA (0 Entri)</span>
-                <!-- Ikon loading spinner -->
-                <svg id="loadingSpinner" class="hidden animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-            </button>
+<!-- Tombol Simpan (Save) Utama -->
+<button type="submit" id="saveButton" disabled
+class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl hover:bg-green-700 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed touch-target">
+<span id="saveText">SIMPAN SEMUA DATA (0 Entri)</span>
+<svg id="loadingSpinner" class="hidden animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
+</button>
         </form>
 
         <!-- Kotak Pesan Pop-up (Modal sederhana) -->
@@ -468,130 +467,127 @@ input:focus, select:focus, textarea:focus {
          * @param {number} id - ID unik untuk form entri ini.
          * @returns {string} HTML string untuk satu form entri.
          */
-        function createDataEntryTemplate(id) {
-            // Gunakan `data-id="${id}"` untuk identifikasi saat menghapus
+         function createDataEntryTemplate(id) {
             return `
-                <div class="data-entry-card p-5 sm:p-8 relative" id="entry-${id}" data-id="${id}">
+                <div class="data-entry-card p-4 sm:p-8 relative" id="entry-${id}" data-id="${id}">
                     <!-- Header Card -->
-                    <div class="flex justify-between items-center mb-6 border-b pb-3">
-                        <h3 class="text-xl font-bold text-gray-800">Data Prospect #${id + 1}</h3>
-                        <!-- Tombol Cancel/Hapus Entri (Hanya muncul setelah entri pertama) -->
+                    <div class="flex justify-between items-center mb-4 sm:mb-6 border-b pb-3">
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800">Prospect #${id + 1}</h3>
                         ${id > 0 ? `
                             <button type="button" onclick="deleteEntry(${id})"
-                                    class="py-1 px-3 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition duration-300">
-                                Batal
+                                    class="py-2 px-3 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition duration-300 touch-target">
+                                Hapus
                             </button>
                         ` : ''}
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                        <!-- 1. Date Selector -->
-                        <div>
-                            <label for="date-${id}" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Input <span class="text-red-500">*</span></label>
-                            <input type="date" id="date-${id}" required class="w-full border-gray-300 rounded-lg p-3">
+                    <div class="space-y-4 sm:space-y-6">
+                        <!-- Date Selector -->
+                        <div class="form-group">
+                            <label for="date-${id}" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Input <span class="text-red-500">*</span></label>
+                            <input type="date" id="date-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                         </div>
                         
-                        <!-- 2. Region -->
-                        <div>
-                            <label for="region-${id}" class="block text-sm font-medium text-gray-700 mb-1">Region <span class="text-red-500">*</span></label>
-                            <select id="region-${id}" required data-id="${id}" data-type="region" class="w-full border-gray-300 rounded-lg p-3">
+                        <!-- Region -->
+                        <div class="form-group">
+                            <label for="region-${id}" class="block text-sm font-medium text-gray-700 mb-2">Region <span class="text-red-500">*</span></label>
+                            <select id="region-${id}" required data-id="${id}" data-type="region" class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
                         
-                        <!-- 3. Province -->
-                        <div>
-                            <label for="province-${id}" class="block text-sm font-medium text-gray-700 mb-1">Province <span class="text-red-500">*</span></label>
-                            <select id="province-${id}" required data-id="${id}" data-type="province" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75">
+                        <!-- Province -->
+                        <div class="form-group">
+                            <label for="province-${id}" class="block text-sm font-medium text-gray-700 mb-2">Province <span class="text-red-500">*</span></label>
+                            <select id="province-${id}" required data-id="${id}" data-type="province" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75 touch-target">
                                 <option value="" disabled selected>Pilih Provinsi...</option>
                             </select>
                         </div>
                         
-                        <!-- 4. City/Regency -->
-                        <div>
-                            <label for="city-${id}" class="block text-sm font-medium text-gray-700 mb-1">City/Regency <span class="text-red-500">*</span></label>
-                            <select id="city-${id}" required data-id="${id}" data-type="city" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75">
+                        <!-- City/Regency -->
+                        <div class="form-group">
+                            <label for="city-${id}" class="block text-sm font-medium text-gray-700 mb-2">City/Regency <span class="text-red-500">*</span></label>
+                            <select id="city-${id}" required data-id="${id}" data-type="city" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75 touch-target">
                                 <option value="" disabled selected>Pilih Kota/Kabupaten...</option>
                             </select>
                         </div>
                         
-                        <!-- 5. Branch -->
-                        <div>
-                            <label for="branch-${id}" class="block text-sm font-medium text-gray-700 mb-1">Branch <span class="text-red-500">*</span></label>
-                            <select id="branch-${id}" required data-id="${id}" data-type="branch" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75">
+                        <!-- Branch -->
+                        <div class="form-group">
+                            <label for="branch-${id}" class="block text-sm font-medium text-gray-700 mb-2">Branch <span class="text-red-500">*</span></label>
+                            <select id="branch-${id}" required data-id="${id}" data-type="branch" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75 touch-target">
                                 <option value="" disabled selected>Pilih Branch...</option>
                             </select>
                         </div>
                         
-                        <!-- 6. Sales -->
-                        <div>
-                            <label for="sales-${id}" class="block text-sm font-medium text-gray-700 mb-1">Sales <span class="text-red-500">*</span></label>
-                            <select id="sales-${id}" required data-id="${id}" data-type="sales" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75">
+                        <!-- Sales -->
+                        <div class="form-group">
+                            <label for="sales-${id}" class="block text-sm font-medium text-gray-700 mb-2">Sales <span class="text-red-500">*</span></label>
+                            <select id="sales-${id}" required data-id="${id}" data-type="sales" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75 touch-target">
                                 <option value="" disabled selected>Pilih Sales...</option>
                             </select>
                         </div>
 
-                        <!-- 7. Prospect Name (Alphabet only, Proper Case) -->
-                        <div class="md:col-span-2">
-                            <label for="prospectName-${id}" class="block text-sm font-medium text-gray-700 mb-1">Prospect Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="prospectName-${id}" required pattern="[a-zA-Z\\s]*"
-                                   oninput="this.value = toProperCase(this.value);"
-                                   class="w-full border-gray-300 rounded-lg p-3" placeholder="Contoh: Rendi Sudarmono">
-                            <p class="text-xs text-gray-500 mt-1">Hanya huruf dan spasi. Otomatis Proper Case.</p>
+                        <!-- Prospect Name -->
+                        <div class="form-group">
+                            <label for="prospectName-${id}" class="block text-sm font-medium text-gray-700 mb-2">Prospect Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="prospectName-${id}" required 
+                                   oninput="this.value = toProperCase(this.value.replace(/[^a-zA-Z\\s]/g, ''));"
+                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: Rendi Sudarmono">
+                            <p class="text-xs text-gray-500 mt-2">Hanya huruf dan spasi. Otomatis Proper Case.</p>
                         </div>
                         
-                        <!-- 7. Phone (Number only) -->
-                        <div>
-                            <label for="phone-${id}" class="block text-sm font-medium text-gray-700 mb-1">Phone <span class="text-red-500">*</span></label>
-    <input type="tel" id="phone-${id}" required 
-           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-           class="w-full border-gray-300 rounded-lg p-3" placeholder="Contoh: 081234567890">
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="phone-${id}" class="block text-sm font-medium text-gray-700 mb-2">Phone <span class="text-red-500">*</span></label>
+                            <input type="tel" id="phone-${id}" required 
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: 081234567890">
                         </div>
 
-                        <!-- 7. Monthly Fee (Number only, non-mandatory) -->
-                        <div>
-                            <label for="monthlyFee-${id}" class="block text-sm font-medium text-gray-700 mb-1">Monthly Fee (Opsional)</label>
-                            <input type="number" id="monthlyFee-${id}" inputmode="numeric"
-                                   class="w-full border-gray-300 rounded-lg p-3" placeholder="Contoh: 250000">
+                        <!-- Monthly Fee -->
+                        <div class="form-group">
+                            <label for="monthlyFee-${id}" class="block text-sm font-medium text-gray-700 mb-2">Monthly Fee (Opsional)</label>
+                            <input type="number" id="monthlyFee-${id}" 
+                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: 250000">
                         </div>
 
-                        <!-- 7. Address (Alphanumeric, Proper Case) -->
-                        <div class="md:col-span-2">
-                            <label for="address-${id}" class="block text-sm font-medium text-gray-700 mb-1">Address <span class="text-red-500">*</span></label>
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="address-${id}" class="block text-sm font-medium text-gray-700 mb-2">Address <span class="text-red-500">*</span></label>
                             <input type="text" id="address-${id}" required
                                    oninput="this.value = toProperCase(this.value);"
-                                   class="w-full border-gray-300 rounded-lg p-3" placeholder="Contoh: Jl. Kenari No. 123">
+                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: Jl. Kenari No. 123">
                         </div>
                         
-                        <!-- 7. Subdistric (Dropdown) -->
-                        <div>
-                            <label for="subdistric-${id}" class="block text-sm font-medium text-gray-700 mb-1">Subdistric (Kecamatan) <span class="text-red-500">*</span></label>
-                            <!-- Catatan: Karena Subdistric tidak memiliki data master hierarki, kita biarkan sebagai input manual untuk kasus ini -->
+                        <!-- Subdistric -->
+                        <div class="form-group">
+                            <label for="subdistric-${id}" class="block text-sm font-medium text-gray-700 mb-2">Subdistric (Kecamatan) <span class="text-red-500">*</span></label>
                             <input type="text" id="subdistric-${id}" required
                                    oninput="this.value = toProperCase(this.value);"
-                                   class="w-full border-gray-300 rounded-lg p-3" placeholder="Nama Kecamatan">
+                                   class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Nama Kecamatan">
                         </div>
 
-                        <!-- 7. Isp Existing -->
-                        <div>
-                            <label for="ispExisting-${id}" class="block text-sm font-medium text-gray-700 mb-1">ISP Existing <span class="text-red-500">*</span></label>
-                            <select id="ispExisting-${id}" required class="w-full border-gray-300 rounded-lg p-3">
+                        <!-- Isp Existing -->
+                        <div class="form-group">
+                            <label for="ispExisting-${id}" class="block text-sm font-medium text-gray-700 mb-2">ISP Existing <span class="text-red-500">*</span></label>
+                            <select id="ispExisting-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
 
-                        <!-- 7. Source -->
-                        <div>
-                            <label for="source-${id}" class="block text-sm font-medium text-gray-700 mb-1">Source <span class="text-red-500">*</span></label>
-                            <select id="source-${id}" required class="w-full border-gray-300 rounded-lg p-3">
+                        <!-- Source -->
+                        <div class="form-group">
+                            <label for="source-${id}" class="block text-sm font-medium text-gray-700 mb-2">Source <span class="text-red-500">*</span></label>
+                            <select id="source-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
 
-                        <!-- 7. Status -->
-                        <div>
-                            <label for="status-${id}" class="block text-sm font-medium text-gray-700 mb-1">Status <span class="text-red-500">*</span></label>
-                            <select id="status-${id}" required class="w-full border-gray-300 rounded-lg p-3">
+                        <!-- Status -->
+                        <div class="form-group">
+                            <label for="status-${id}" class="block text-sm font-medium text-gray-700 mb-2">Status <span class="text-red-500">*</span></label>
+                            <select id="status-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
@@ -892,6 +888,49 @@ input:focus, select:focus, textarea:focus {
         // =========================================================================
 
         document.getElementById('addButton').addEventListener('click', addEntry);
+
+                // =========================================================================
+        // 9. MOBILE ENHANCEMENTS
+        // =========================================================================
+
+        // Prevent zoom on focus (iOS specific)
+        document.addEventListener('touchstart', function() {}, {passive: true});
+
+        // Improve select dropdowns on mobile
+        function enhanceMobileSelects() {
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.addEventListener('focus', function() {
+                    this.style.fontSize = '16px'; // Prevent zoom on iOS
+                });
+            });
+        }
+
+        // Initialize mobile enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            enhanceMobileSelects();
+            
+            // Re-initialize when new entries are added
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.addedNodes.length) {
+                        enhanceMobileSelects();
+                    }
+                });
+            });
+            
+            observer.observe(document.getElementById('dataEntriesContainer'), {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        // Handle orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
 </script>
 
 
