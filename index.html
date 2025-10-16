@@ -202,6 +202,23 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         // Global role variable, default AC
         let currentRole = 'AC';
 
+        /**
+         * Update monthly fee field based on current role for all entries.
+         */
+        function updateMonthlyFeeForRole() {
+            const entries = document.querySelectorAll('.data-entry-card');
+            entries.forEach(entry => {
+                const entryId = entry.getAttribute('data-id');
+                const monthlyFeeInput = document.getElementById(`monthlyFee-${entryId}`);
+                if (currentRole === 'AE') {
+                    monthlyFeeInput.disabled = true;
+                    monthlyFeeInput.value = '';
+                } else {
+                    monthlyFeeInput.disabled = false;
+                }
+            });
+        }
+
         // =========================================================================
         // 1. DATA MASTER LOKASI DAN SALES
         // =========================================================================
@@ -496,6 +513,12 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 const id = entry.getAttribute('data-id');
                 updateAdditionalFields(id);
             });
+
+            // Update monthly fee for all entries based on new role
+            updateMonthlyFeeForRole();
+
+            // Update save button status after role change
+            updateSaveButtonStatus();
         }
 
         /**
@@ -881,13 +904,13 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
          */
         function addEntry() {
             const container = document.getElementById('dataEntriesContainer');
-            
+
             // Increment counter untuk ID unik
             const newId = entryCounter++;
-            
+
             // Sisipkan HTML template baru
             container.insertAdjacentHTML('beforeend', createDataEntryTemplate(newId));
-            
+
             // Ambil elemen yang baru dibuat
             const newEntry = document.getElementById(`entry-${newId}`);
 
@@ -900,19 +923,22 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             // Update additional fields untuk entri baru
             updateAdditionalFields(newId);
 
+            // Update monthly fee based on current role
+            updateMonthlyFeeForRole();
+
             // 1. Inisialisasi Region (Wajib)
             populateDropdown(regionSelect, getUniqueOptions('region'), "Pilih Region...", "");
-            
+
             // 2. Inisialisasi Dropdown Statis
             populateDropdown(ispSelect, ISP_EXISTING, "Pilih ISP Existing...", "");
             populateDropdown(sourceSelect, SOURCE_OPTIONS, "Pilih Source...", "");
             populateDropdown(statusSelect, STATUS_OPTIONS, "Pilih Status...", "");
-            
+
             // Dapatkan tanggal hari ini dan atur sebagai default value untuk field date
             const today = new Date().toISOString().split('T')[0];
             document.getElementById(`date-${newId}`).value = today;
 
-            
+
             // --- PERUBAHAN UTAMA: Tambahkan listener ke SEMUA input wajib ---
             // Listener untuk perubahan dropdown berjenjang (Region, Province, City, Branch)
             ['region', 'province', 'city', 'branch'].forEach(type => {
@@ -924,7 +950,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     });
                 }
             });
-            
+
             // Listener untuk perubahan dropdown statis (ISP, Source, Status, Sales)
             // Serta semua input teks/date yang required.
             // Gunakan event 'input' untuk input teks dan 'change' untuk select/date
@@ -943,10 +969,10 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             statusSelectForAdditional.addEventListener('change', () => updateAdditionalFields(newId));
 
             // --- AKHIR PERUBAHAN UTAMA ---
-            
+
             // Perbarui status tombol Simpan
             updateSaveButtonStatus();
-            
+
             // Scroll ke form yang baru ditambahkan (bagus untuk mobile)
             newEntry.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -961,13 +987,13 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         }
 
         /**
-         * Memeriksa apakah semua entri form wajib telah terisi.
+         * Memeriksa apakah semua entri form wajib telah terisi berdasarkan role.
          */
         function updateSaveButtonStatus() {
             const entries = document.querySelectorAll('.data-entry-card');
             const saveButton = document.getElementById('saveButton');
             const saveText = document.getElementById('saveText');
-            
+
             // Cek apakah ada entri
             if (entries.length === 0) {
                 saveText.textContent = 'SIMPAN SEMUA DATA (0 Entri)';
@@ -975,19 +1001,21 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 return;
             }
 
-            // Iterasi melalui setiap entri dan cek validitasnya
+            // Iterasi melalui setiap entri dan cek validitasnya berdasarkan role
             let allValid = true;
             entries.forEach(entry => {
-                // Gunakan checkValidity() bawaan dari form/input
+                const entryId = entry.getAttribute('data-id');
                 const requiredInputs = entry.querySelectorAll('[required]');
                 requiredInputs.forEach(input => {
                     // Check if the input is empty or invalid based on its constraints
                     if (!input.checkValidity()) {
                         allValid = false;
-                        // Hentikan iterasi segera setelah menemukan input yang tidak valid
-                        // input.reportValidity(); // Opsi: menampilkan pesan error native
                     }
                 });
+
+                // Untuk AC, Monthly Fee opsional, sudah tidak required
+                // Untuk AE, Monthly Fee disabled, jadi tidak perlu cek
+                // Jika ada field tambahan untuk AE (segmentation, service), sudah required
             });
 
             // Atur status tombol
@@ -1118,7 +1146,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 showMessageModal("Peringatan!", "URL Apps Script belum diatur. Ganti 'YOUR_GOOGLE_SHEET_WEB_APP_URL_HERE' di kode JS.", false);
                 return;
             }
-            
+
             const saveButton = document.getElementById('saveButton');
             const saveText = document.getElementById('saveText');
             const loadingSpinner = document.getElementById('loadingSpinner');
@@ -1129,12 +1157,22 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             loadingSpinner.classList.remove('hidden');
 
             const allData = collectAllData();
-            
+
             // Data yang dikirim ke Google Apps Script (menggunakan 'data' sebagai key)
             const postData = {
                 data: allData
             };
-            
+
+            // Set timeout for notification to appear after 3 seconds, assuming data is saved
+            const notificationTimeout = setTimeout(() => {
+                showMessageModal("Data Berhasil Disimpan!", `Total ${allData.length} data sudah dikirim ke langit ke 7.`, true);
+
+                // Reset form setelah sukses
+                document.getElementById('dataEntriesContainer').innerHTML = ''; // Hapus semua entri
+                entryCounter = 0; // Reset counter
+                addEntry(); // Tambahkan entri kosong pertama kembali
+            }, 3000); // 3 seconds
+
             try {
                 // 2. Lakukan permintaan POST ke Apps Script URL
                 const response = await fetch(GOOGLE_SHEET_WEB_APP_URL, {
@@ -1145,17 +1183,22 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     },
                     body: JSON.stringify(postData),
                 });
-                
-                // 3. Tampilkan pesan berhasil
+
+                // Clear the timeout since fetch succeeded
+                clearTimeout(notificationTimeout);
+
+                // 3. Tampilkan pesan berhasil immediately if fetch is fast
                 showMessageModal("Data Berhasil Disimpan!", `Total ${allData.length} data sudah dikirim ke langit ke 7.`, true);
 
                 // 4. Reset form setelah sukses
                 document.getElementById('dataEntriesContainer').innerHTML = ''; // Hapus semua entri
                 entryCounter = 0; // Reset counter
                 addEntry(); // Tambahkan entri kosong pertama kembali
-                
+
             } catch (error) {
                 console.error("Kesalahan saat mengirim data:", error);
+                // Clear timeout and show error
+                clearTimeout(notificationTimeout);
                 // 5. Tampilkan pesan gagal
                 showMessageModal("Gagal Menyimpan Data!", `Terjadi kesalahan jaringan coba lagi ya.`, false);
             } finally {
@@ -1182,6 +1225,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 document.getElementById(`ac-label-${firstId}`).style.color = 'green';
                 document.getElementById(`ae-label-${firstId}`).style.color = 'black';
             }
+
+            // Update monthly fee for initial role
+            updateMonthlyFeeForRole();
         });
                 // =========================================================================
         // 8. EVENT LISTENER UNTUK TOMBOL TAMBAH DATA
