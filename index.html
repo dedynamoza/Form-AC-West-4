@@ -66,7 +66,7 @@
         <div id="messageModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden flex items-center justify-center p-4">
             <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm text-center">
                 <h3 id="modalTitle" class="text-xl font-bold mb-3 text-green-600">Berhasil Disimpan!</h3>
-                <p id="modalMessage" class="text-gray-700 mb-5">Data Anda telah berhasil dikirim ke Google Sheet.</p>
+                <p id="modalMessage" class="text-gray-700 mb-5">Data kamu telah berhasil dikirim ke langit ke 7.</p>
                 <button id="closeModalButton" class="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Tutup</button>
             </div>
         </div>
@@ -75,7 +75,7 @@
         <div id="confirmModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden flex items-center justify-center p-4">
             <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
                 <h3 class="text-xl font-bold mb-4 text-red-600">Konfirmasi Penghapusan</h3>
-                <p class="text-gray-700 mb-5">Anda yakin ingin menghapus entri data ini?</p>
+                <p class="text-gray-700 mb-5">Kamu yakin ingin hapus ini?</p>
                 <div class="flex justify-end space-x-3">
                     <button id="cancelDeleteButton" class="py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-100">Batal</button>
                     <button id="confirmDeleteButton" class="py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700">Hapus</button>
@@ -172,11 +172,11 @@
             "Branch Palembang 8 Ulu": ["Tasya Yolanda", "Rollis Virgiawan", "Maharany Afri Ariesta", "Andrian Akbar Sani", "Agus Wijayanto"],
             "Branch Palembang Karya Jaya": ["Geri Esmemed", "Faisal Anggara", "Erika Destiyani", "Dicky Masryansyah Eka Putra"],
             "Branch Palembang Sekip Jaya": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
-            "Branch Jambi Thehok": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
-            "Branch Jambi Kenali Besar": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
-            "Branch Jambi Kenali Asam Bawah": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
-            "Branch Muaro Jambi Sengeti": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
-            "Branch Tanjung Jabung Barat Merlung": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
+            "Branch Jambi Thehok": ["Delfi Putri Damayarli", "Moch Syafi I", "Muhammad Hanif Ramadhan", "Novianto", "Tommi Sahirman"],
+            "Branch Jambi Kenali Besar": ["Desni Marlyani", "Hariya Prayoga", "Misti Mardiana", "Nima Noviarni"],
+            "Branch Jambi Kenali Asam Bawah": ["Faudi Aria Gusti", "Ferry Ferdiansyah", "Anggraini"],
+            "Branch Muaro Jambi Sengeti": ["XXX", "XXxX"],
+            "Branch Tanjung Jabung Barat Merlung": ["xxxxx"],
         };
 
         // Data Dropdown Statis
@@ -441,8 +441,9 @@
                         <!-- 7. Phone (Number only) -->
                         <div>
                             <label for="phone-${id}" class="block text-sm font-medium text-gray-700 mb-1">Phone <span class="text-red-500">*</span></label>
-                            <input type="tel" id="phone-${id}" required inputmode="numeric" pattern="[0-9]*"
-                                   class="w-full border-gray-300 rounded-lg p-3" placeholder="Contoh: 081234567890">
+    <input type="tel" id="phone-${id}" required 
+           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+           class="w-full border-gray-300 rounded-lg p-3" placeholder="Contoh: 081234567890">
                         </div>
 
                         <!-- 7. Monthly Fee (Number only, non-mandatory) -->
@@ -530,6 +531,7 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById(`date-${newId}`).value = today;
 
+            
             // --- PERUBAHAN UTAMA: Tambahkan listener ke SEMUA input wajib ---
             // Listener untuk perubahan dropdown berjenjang (Region, Province, City, Branch)
             ['region', 'province', 'city', 'branch'].forEach(type => {
@@ -755,7 +757,7 @@
                 });
                 
                 // 3. Tampilkan pesan berhasil
-                showMessageModal("Data Berhasil Disimpan!", `Total ${allData.length} entri telah dikirim ke Google Sheet.`, true);
+                showMessageModal("Data Berhasil Disimpan!", `Total ${allData.length} data sudah dikirim ke langit ke 7.`, true);
 
                 // 4. Reset form setelah sukses
                 document.getElementById('dataEntriesContainer').innerHTML = ''; // Hapus semua entri
@@ -765,7 +767,7 @@
             } catch (error) {
                 console.error("Kesalahan saat mengirim data:", error);
                 // 5. Tampilkan pesan gagal
-                showMessageModal("Gagal Menyimpan Data!", `Terjadi kesalahan jaringan atau koneksi API. Cek konsol (F12) untuk detail.`, false);
+                showMessageModal("Gagal Menyimpan Data!", `Terjadi kesalahan jaringan coba lagi ya.`, false);
             } finally {
                 // 6. Sembunyikan loading dan atur ulang tombol
                 saveButton.disabled = false;
