@@ -12,10 +12,12 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         /* Mengatur font dasar dan latar belakang gradasi untuk tampilan modern */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #87ceeb 0%, #dda0dd 100%);
         body {
             font-family: 'Inter', sans-serif;
             /* Gradasi warna yang profesional dan menarik (dari biru laut ke ungu) */
-            background: linear-gradient(135deg, #4c68d7 0%, #7f52b8 100%);
+            background: var(--bg-gradient);
             min-height: 100vh; /* Memastikan gradasi penuh di seluruh layar */
         }
         /* Styling untuk card input data */
@@ -30,11 +32,11 @@
             border-color: #4c68d7; /* Warna fokus disesuaikan dengan gradasi */
             box-shadow: 0 0 0 3px rgba(76, 104, 215, 0.3);
         }
-        /* Mobile Optimization */
+/* Mobile Optimization */
 @media (max-width: 768px) {
     body {
         padding: 0.5rem;
-        background: linear-gradient(135deg, #4c68d7 0%, #7f52b8 100%);
+        background: var(--bg-gradient);
         min-height: 100vh;
     }
     
@@ -228,8 +230,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         const LOCATION_DATA = [
         { region: "RO 17 Bandar Lampung", province: "Lampung", city: "Metro", branch: "Branch Metro Hadimulyo Barat" },
 { region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Lampung Tanjung Senang" },
-{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Lampung TENGAH", branch: "Branch Lampung Tengah Bandar Jaya" },
-{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Lampung SELATAN", branch: "Branch Lampung Selatan Kalianda" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Lampung Tengah", branch: "Branch Lampung Tengah Bandar Jaya" },
+{ region: "RO 17 Bandar Lampung", province: "Lampung", city: "Lampung Selatan", branch: "Branch Lampung Selatan Kalianda" },
 { region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Lampung Rawa Laut" },
 { region: "RO 17 Bandar Lampung", province: "Lampung", city: "Bandar Lampung", branch: "Branch Bandar Lampung Rajabasa" },
 { region: "RO 17 Bandar Lampung", province: "Lampung", city: "Mesuji", branch: "Branch Mesuji Umbulan Tedunggeram" },
@@ -248,9 +250,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Banyuasin", branch: "Branch Banyuasin Pangkalan Balai" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Banyuasin", branch: "Branch Banyuasin Betung" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Banyuasin", branch: "Branch Banyuasin Sungsang" },
-{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "BANGKA", branch: "Branch Bangka Sungai Liat" },
-{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "BANGKA BARAT", branch: "Branch Bangka Barat Kelapa" },
-{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "BANGKA BARAT", branch: "Branch Bangka Barat Muntok" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "Bangka", branch: "Branch Bangka Sungai Liat" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "Bangka Barat", branch: "Branch Bangka Barat Kelapa" },
+{ region: "RO 02 Palembang", province: "Bangka Belitung", city: "Bangka Barat", branch: "Branch Bangka Barat Muntok" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Musi Banyuasin", branch: "Branch Musi Banyuasin Bayung Lecir" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Musi Banyuasin", branch: "Branch Musi Banyuasin Pangkalan Gresik" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Musi Banyuasin", branch: "Branch Musi Banyuasin Sungai Lilin" },
@@ -262,47 +264,49 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Sekip Jaya" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Sukamaju" },
 { region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Sukodadi" },
+{ region: "RO 02 Palembang", province: "Sumatra Selatan", city: "Palembang", branch: "Branch Palembang Talang Kelapa" },
 { region: "RO 02 Palembang", province: "Bangka Belitung", city: "Pangkal Pinang", branch: "Branch Pangkal Pinang Batin Tikal" },
         ];
 
         // Data Master Sales: Branch -> Sales
         // Menggunakan Map untuk pencarian nama Sales berdasarkan nama Branch dengan cepat
         const SALES_DATA = {
-            "Branch Tulang Bawang Barat Banjar Agung": ["Tego Lesmono", "Merlina Siahaan", "Laurensius Deo Aditya", "Heni Novitasari", "Boby Agustian"],
-            "Branch Mesuji Umbulan Tedunggeram": ["Nabillahana Ekanidya", "Monica Lusiana", "Didi Yunanto"],
-            "Branch Tulang Bawang Barat Menggala": ["Meldalisa", "Ingka Kristy", "Herdi Saputra", "Angga Pratama"],
-            "Branch Lampung Tengah Bandar Jaya": ["Wd Rahman", "Puspita Taswan", "Anisa Silvia", "Aldi Ansyah"],
-            "Branch Metro Hadimulyo Barat": ["Rifatin Cholidia", "Ricky Sanjaya", "M Davin", "Nurul Hakim", "Evi Meliana", "Andres Setiawan"],
-            "Branch Lampung Selatan Kalianda": ["Riski Aprianto", "Habibi", "Defli Yanti", "Bima Pratama Saputro"],
-            "Branch Bandar Lampung Rajabasa": ["Qatrunnada Nazhifa", "Muhammad Bangga Pribadi", "Jon Ricardo", "Syifa Anastasia Ardhea", "Ahmat Aji Saputra", "Ahmad Zail Aidy Gemilang"],
-            "Branch Bandar Lampung Tanjung Senang": ["Muhammad Tasil Iskandar", "Rasyid Kurniawan", "Muhamad Diding", "Maulida Yunisah Pusparini", "Josua Armando Silalahi", "Bella Mustika"],
-            "Branch Bandar Bandar Lampung Campang Raya": ["Firza Zunaidi Firdaus", "Shovia Camilia Salsabilla", "Mahmud Farizi", "Yoga Jatra Radinta", "Imam Asari"],
+            "Branch Tulang Bawang Barat Banjar Agung": ["Tego Lesmono", "Merlina Siahaan", "Laurensius Deo Aditya", "Heni Novitasari", "Boby Agustian", "Charityfio Brian Aprilias Madita"],
+            "Branch Mesuji Umbulan Tedunggeram": ["Nabillahana Ekanidya", "Monica Lusiana", "Didi Yunanto", "Charityfio Brian Aprilias Madita"],
+            "Branch Tulang Bawang Barat Menggala": ["Meldalisa", "Ingka Kristy", "Herdi Saputra", "Angga Pratama", "Charityfio Brian Aprilias Madita"],
+            "Branch Lampung Tengah Bandar Jaya": ["Wd Rahman", "Puspita Taswan", "Anisa Silvia", "Aldi Ansyah", "Charityfio Brian Aprilias Madita"],
+            "Branch Metro Hadimulyo Barat": ["Rifatin Cholidia", "Ricky Sanjaya", "M Davin", "Nurul Hakim", "Evi Meliana", "Andres Setiawan","Charityfio Brian Aprilias Madita"],
+            "Branch Lampung Selatan Kalianda": ["Riski Aprianto", "Habibi", "Defli Yanti", "Bima Pratama Saputro","Charityfio Brian Aprilias Madita"],
+            "Branch Bandar Lampung Rajabasa": ["Qatrunnada Nazhifa", "Muhammad Bangga Pribadi", "Jon Ricardo", "Syifa Anastasia Ardhea", "Ahmat Aji Saputra", "Ahmad Zail Aidy Gemilang","Charityfio Brian Aprilias Madita"],
+            "Branch Bandar Lampung Tanjung Senang": ["Muhammad Tasil Iskandar", "Rasyid Kurniawan", "Muhamad Diding", "Maulida Yunisah Pusparini", "Josua Armando Silalahi", "Bella Mustika","Charityfio Brian Aprilias Madita"],
+            "Branch Bandar Bandar Lampung Campang Raya": ["Firza Zunaidi Firdaus", "Shovia Camilia Salsabilla", "Mahmud Farizi", "Yoga Jatra Radinta", "Imam Asari",],
             "Branch Bandar Lampung Rawa Laut": ["Charityfio Brian Aprilias Madita", "Suci Nata Kusuma", "Johan Rosianta", "Egi Adespan Kurniawan", "Danang Miftaqur Anam", "Budi Setiawan", "Ayu Wulandari"],
             "Branch Bengkulu Jembatan Kecil": ["Vetty Wahyuni Putri", "Rigo Tambang Apriansyah", "Refo Agustian", "Monica Chintya Natasa", "Haggi Insyiraah"],
             "Branch Bangka Barat Muntok": ["Yuda Febrian", "Cakra Elvis Bima Putra", "Alfariza Estetika"],
             "Branch Bangka Barat Kelapa": ["Yeni Pionita", "Sintia", "Heru Najamudin"],
             "Branch Bangka Sungai Liat": ["Yogi Nugraha", "Nuke Putri Utami", "Lisa Januarti", "Chrisna Sagita", "Anggy Saputra", "Muhammad Tasil Iskandar"],
             "Branch Pangkal Pinang Batin Tikal": ["Febriandi", "Dhea Meylani", "Denni", "Bayu Prakoso", "Ayu Vialianty", "Achmad Hasbi Luthfillah"],
-            "Branch Musi Banyuasin Bayung Lecir": ["Dewi Sri Wahyuni", "Dian Septi Anggraini", "Hefryando Manurung"],
-            "Branch Musi Banyuasin Sungai Lilin": ["Yuki Ramadona", "Josi Imelda Prasetia Putri"],
-            "Branch Banyuasin Pangkalan Balai": ["Violeta", "Retno Chandyarum", "Nonik Wulantika", "Muhammad Wahyudi", "Harisyah Ramadhan"],
-            "Branch Banyuasin Betung": ["Nadila Oktaviani", "Lestari", "Jian Partawijaya", "Bery Prima"],
-            "Branch Ogan Komering Ilir Tugu Mulyo": ["Nur Fidiah", "Yusuf Nauval Hs", "Hari Mukti Az", "Fransiska Adela"],
-            "Branch Ogan Komering Ilir Kayu Agung": ["Wismariza Oreka Doyosi", "Roni Putra Sriwijaya", "Muhammad Imam", "Dwitari Juliastika", "Citra Anggraini"],
-            "Branch Banyuasin Sungsang": ["Nurulia Putri Amanda", "Ilhami Pradini"],
-            "Branch Palembang Sukamaju": ["Tommy Setiawan", "Muhammad Okyaki", "Ismail Marzuki", "Indah Permata Sari", "M Dio Akbhar Alfredo", "Amelia Handayani"],
-            "Branch Musi Banyuasin Pangkalan Gresik": ["Cindy Kaliana Tantri", "Harani Krisma"],
-            "Branch Palembang Sukodadi": ["Muhammad Yusuf", "Sri Sundari", "M Selamet Yuwono", "Siti Tartila Ulinda Mareta", "Redy Irvin Wiratama", "Chandri Apriasma Pradana Putra"],
-            "Branch Palembang Kalidoni": ["Siti Putri Fadilah Orchidlya", "Muhammad Zen Zidan", "Jumades Arma Jaya Putra", "Imam Maulana", "Arizkiyanti"],
-            "Branch Palembang 8 Ulu": ["Tasya Yolanda", "Rollis Virgiawan", "Maharany Afri Ariesta", "Andrian Akbar Sani", "Agus Wijayanto"],
-            "Branch Palembang Karya Jaya": ["Geri Esmemed", "Faisal Anggara", "Erika Destiyani", "Dicky Masryansyah Eka Putra"],
-            "Branch Palembang Sekip Jaya": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro"],
-            "Branch Jambi Thehok": ["Delfi Putri Damayarli", "Moch Syafi I", "Muhammad Hanif Ramadhan", "Novianto", "Tommi Sahirman"],
-            "Branch Jambi Kenali Besar": ["Desni Marlyani", "Hariya Prayoga", "Misti Mardiana", "Nima Noviarni"],
+            "Branch Musi Banyuasin Bayung Lecir": ["Dewi Sri Wahyuni", "Dian Septi Anggraini", "Hefryando Manurung", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Musi Banyuasin Sungai Lilin": ["Yuki Ramadona", "Josi Imelda Prasetia Putri", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Banyuasin Pangkalan Balai": ["Violeta", "Retno Chandyarum", "Nonik Wulantika", "Muhammad Wahyudi", "Harisyah Ramadhan","M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Banyuasin Betung": ["Nadila Oktaviani", "Lestari", "Jian Partawijaya", "Bery Prima","M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Ogan Komering Ilir Tugu Mulyo": ["Nur Fidiah", "Yusuf Nauval Hs", "Hari Mukti Az", "Fransiska Adela", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Ogan Komering Ilir Kayu Agung": ["Wismariza Oreka Doyosi", "Roni Putra Sriwijaya", "Muhammad Imam", "Dwitari Juliastika", "Citra Anggraini","M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Banyuasin Sungsang": ["Nurulia Putri Amanda", "Ilhami Pradini", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang Sukamaju": ["Tommy Setiawan", "Muhammad Okyaki", "Ismail Marzuki", "Indah Permata Sari", "M Dio Akbhar Alfredo", "Amelia Handayani", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Musi Banyuasin Pangkalan Gresik": ["Cindy Kaliana Tantri", "Harani Krisma", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang Sukodadi": ["Muhammad Yusuf", "Sri Sundari", "M Selamet Yuwono", "Siti Tartila Ulinda Mareta", "Redy Irvin Wiratama", "Chandri Apriasma Pradana Putra", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang Kalidoni": ["Siti Putri Fadilah Orchidlya", "Jumades Arma Jaya Putra", "Imam Maulana", "Arizkiyanti", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang 8 Ulu": ["Tasya Yolanda", "Rollis Virgiawan", "Maharany Afri Ariesta", "Andrian Akbar Sani", "Agus Wijayanto", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang Talang Kelapa": ["M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang Karya Jaya": ["Geri Esmemed", "Faisal Anggara", "Erika Destiyani", "Dicky Masryansyah Eka Putra", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
+            "Branch Palembang Sekip Jaya": ["Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro", "Muhammad Zen Zidan"],
+            "Branch Jambi Thehok": ["Delfi Putri Damayarli", "Moch Syafi I", "Muhammad Hanif Ramadhan", "Novianto", "Tommi Sahirman", "Fachrul Rozi"],
+            "Branch Jambi Kenali Besar": ["Desni Marlyani", "Hariya Prayoga", "Misti Mardiana", "Nima Noviarni", "Fachrul Rozi"],
             "Branch Jambi Kenali Asam Bawah": ["Faudi Aria Gusti", "Ferry Ferdiansyah", "Anggraini"],
-            "Branch Muaro Jambi Sengeti": ["XXX", "XXxX"],
-            "Branch Tanjung Jabung Barat Merlung": ["xxxxx"],
-            "Branch Tanjung Jabung Barat Kuala Tungkal": ["xxx"],
+            "Branch Muaro Jambi Sengeti": ["Fachrul Rozi"],
+            "Branch Tanjung Jabung Barat Merlung": ["Fachrul Rozi"],
+            "Branch Tanjung Jabung Barat Kuala Tungkal": ["Fachrul Rozi"],
         };
 
         // Data Dropdown Statis
@@ -422,9 +426,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Biznet Dedicated Internet LKPP 1.6 Mbps",
             "Biznet Dedicated Internet LKPP 2 Gbps",
             "Biznet Dedicated Internet LKPP 10 Gbps",
-            "100 Gigabit EtherPort (100 Gbps)",
-            "10 Gigabit EtherPort (10 Gbps)",
-            "1 Gigabit EtherPort (1 Gbps)"
+            "100 Gigabit EtherPort BIX (100 Gbps)",
+            "10 Gigabit EtherPort BIX (10 Gbps)",
+            "1 Gigabit EtherPort BIX (1 Gbps)"
         ];
 
         const REVENUE_MAP = {
@@ -494,17 +498,22 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             const acLabel = document.getElementById(`ac-label-${entryId}`);
             const aeLabel = document.getElementById(`ae-label-${entryId}`);
             const headerTitle = document.querySelector('header h1');
+            const root = document.documentElement;
 
             if (currentRole === 'AC') {
                 currentRole = 'AE';
                 acLabel.style.color = 'black';
                 aeLabel.style.color = 'green';
                 headerTitle.textContent = 'ACCOUNT EXECUTIVE PROSPECT';
+                // Gradasi biru muda untuk AE
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #87ceeb 0%, #4682b4 100%)');
             } else {
                 currentRole = 'AC';
                 acLabel.style.color = 'green';
                 aeLabel.style.color = 'black';
                 headerTitle.textContent = 'AREA COORDINATOR PROSPECT';
+                // Gradasi orange untuk AC
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ffa500 0%, #ff8c00 100%)');
             }
 
             // Update additional fields untuk semua entri
