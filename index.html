@@ -139,7 +139,7 @@ input:focus, select:focus, textarea:focus {
     <div class="max-w-3xl mx-auto">
         <!-- Header Aplikasi -->
         <header class="text-center mb-8 p-4 bg-white/20 backdrop-blur-sm rounded-xl">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">DAILY PROSPECT</h1>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">PROSPECT</h1>
             <p class="text-sm text-gray-200 mt-1">WEST 4</p>
         </header>
 
@@ -499,12 +499,12 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 currentRole = 'AE';
                 acLabel.style.color = 'black';
                 aeLabel.style.color = 'green';
-                headerTitle.textContent = 'B2B PROSPECT';
+                headerTitle.textContent = 'ACCOUNT EXECUTIVE PROSPECT';
             } else {
                 currentRole = 'AC';
                 acLabel.style.color = 'green';
                 aeLabel.style.color = 'black';
-                headerTitle.textContent = 'DAILY PROSPECT';
+                headerTitle.textContent = 'AREA COORDINATOR PROSPECT';
             }
 
             // Update additional fields untuk semua entri
@@ -1188,7 +1188,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 clearTimeout(notificationTimeout);
 
                 // 3. Tampilkan pesan berhasil immediately if fetch is fast
-                showMessageModal("Data Berhasil Disimpan!", `Total ${allData.length} data sudah dikirim ke langit ke 7.`, true);
+                showMessageModal("Data Berhasil Disimpan!", `Total ${allData.length} data sudah dikirim ke langit.`, true);
 
                 // 4. Reset form setelah sukses
                 document.getElementById('dataEntriesContainer').innerHTML = ''; // Hapus semua entri
