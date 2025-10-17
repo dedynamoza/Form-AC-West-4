@@ -536,8 +536,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 // Untuk semua status, tambah Segmentation
                 let html = `
                     <div class="form-group">
-                        <label for="segmentation-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Segmentation <span class="text-red-500">*</span></label>
-                        <select id="segmentation-${entryId}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
+                        <label for="segmentation-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Segmentation</label>
+                        <select id="segmentation-${entryId}" class="w-full border-gray-300 rounded-lg p-3 touch-target">
                             <!-- Opsi diisi oleh JS -->
                         </select>
                     </div>
@@ -547,8 +547,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     // Tambah Service di atas Segmentation (Revenue akan ditambahkan secara dinamis setelah Service dipilih)
                     html = `
                         <div class="form-group">
-                            <label for="service-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Service <span class="text-red-500">*</span></label>
-                            <select id="service-${entryId}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
+                            <label for="service-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Service</label>
+                            <select id="service-${entryId}" class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
                             </select>
                         </div>
@@ -831,16 +831,16 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         <!-- Prospect Name -->
                         <div class="form-group">
                             <label for="prospectName-${id}" class="block text-sm font-medium text-gray-700 mb-2">Prospect Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="prospectName-${id}" required 
+                            <input type="text" id="prospectName-${id}" required minlength="4"
                                    oninput="this.value = toProperCase(this.value.replace(/[^a-zA-Z\\s]/g, ''));"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: Rendi Sudarmono">
-                            <p class="text-xs text-gray-500 mt-2">Hanya huruf dan spasi. Otomatis Proper Case.</p>
+                            <p class="text-xs text-gray-500 mt-2">Hanya huruf dan spasi. Otomatis Proper Case. Min 4 karakter.</p>
                         </div>
-                        
+
                         <!-- Phone -->
                         <div class="form-group">
                             <label for="phone-${id}" class="block text-sm font-medium text-gray-700 mb-2">Phone <span class="text-red-500">*</span></label>
-                            <input type="tel" id="phone-${id}" required 
+                            <input type="tel" id="phone-${id}" required minlength="4"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: 081234567890">
                         </div>
@@ -848,22 +848,22 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         <!-- Monthly Fee -->
                         <div class="form-group">
                             <label for="monthlyFee-${id}" class="block text-sm font-medium text-gray-700 mb-2">Monthly Fee (Opsional)</label>
-                            <input type="number" id="monthlyFee-${id}" 
+                            <input type="number" id="monthlyFee-${id}"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: 250000">
                         </div>
 
                         <!-- Address -->
                         <div class="form-group">
                             <label for="address-${id}" class="block text-sm font-medium text-gray-700 mb-2">Address <span class="text-red-500">*</span></label>
-                            <input type="text" id="address-${id}" required
+                            <input type="text" id="address-${id}" required minlength="4"
                                    oninput="this.value = toProperCase(this.value);"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: Jl. Kenari No. 123">
                         </div>
-                        
+
                         <!-- Subdistric -->
                         <div class="form-group">
                             <label for="subdistric-${id}" class="block text-sm font-medium text-gray-700 mb-2">Subdistric (Kelurahan) <span class="text-red-500">*</span></label>
-                            <input type="text" id="subdistric-${id}" required
+                            <input type="text" id="subdistric-${id}" required minlength="4"
                                    oninput="this.value = toProperCase(this.value);"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Kelurahan">
                         </div>
@@ -1001,7 +1001,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 return;
             }
 
-            // Iterasi melalui setiap entri dan cek validitasnya berdasarkan role
+            // Iterasi melalui setiap entri dan cek validitasnya
             let allValid = true;
             entries.forEach(entry => {
                 const entryId = entry.getAttribute('data-id');
@@ -1013,9 +1013,11 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     }
                 });
 
-                // Untuk AC, Monthly Fee opsional, sudah tidak required
-                // Untuk AE, Monthly Fee disabled, jadi tidak perlu cek
-                // Jika ada field tambahan untuk AE (segmentation, service), sudah required
+                // Cek apakah status sudah dipilih (untuk semua role)
+                const statusSelect = document.getElementById(`status-${entryId}`);
+                if (!statusSelect.value) {
+                    allValid = false;
+                }
             });
 
             // Atur status tombol
