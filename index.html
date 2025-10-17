@@ -670,18 +670,23 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     document.getElementById(`bundling-${entryId}`).addEventListener('change', updateSaveButtonStatus);
                 }, 0);
 
-                // Hide certain fields for Store
-                document.getElementById(`phone-group-${entryId}`).style.display = 'none';
-                document.getElementById(`address-group-${entryId}`).style.display = 'none';
-                document.getElementById(`subdistric-group-${entryId}`).style.display = 'none';
-                document.getElementById(`isp-group-${entryId}`).style.display = 'none';
-                document.getElementById(`monthly-fee-group-${entryId}`).style.display = 'none';
-                document.getElementById(`source-group-${entryId}`).style.display = 'none';
-                document.getElementById(`status-group-${entryId}`).style.display = 'none';
+                // Hide certain fields for Store and remove required attribute
+                const fieldsToHide = ['phone', 'address', 'subdistric', 'isp', 'monthly-fee', 'source', 'status'];
+                fieldsToHide.forEach(field => {
+                    const group = document.getElementById(`${field}-group-${entryId}`);
+                    if (group) {
+                        group.style.display = 'none';
+                        const input = group.querySelector('input, select');
+                        if (input) input.required = false;
+                    }
+                });
 
-                // For Store, keep label as 'Sales', hide prospect name field
+                // For Store, keep label as 'Sales', hide prospect name field and remove required
                 document.getElementById(`sales-store-label-${entryId}`).textContent = 'Sales';
-                document.getElementById(`prospect-billing-group-${entryId}`).style.display = 'none';
+                const prospectGroup = document.getElementById(`prospect-billing-group-${entryId}`);
+                prospectGroup.style.display = 'none';
+                const prospectInput = prospectGroup.querySelector('input');
+                if (prospectInput) prospectInput.required = false;
             } else {
                 // For AC, clear additional fields
                 additionalFields.innerHTML = '';
@@ -1274,36 +1279,32 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
             entries.forEach(entry => {
                 const entryId = entry.getAttribute('data-id');
-                
-                // Kumpulkan semua nilai dari input/select di dalam entri ini
-                let entryData = {
+
+                // Kumpulkan semua nilai dari input/select di dalam entri ini sesuai urutan Google Sheet
+                const entryData = {
+                    Timestamp: document.getElementById(`date-${entryId}`).value,
+                    Role: currentRole,
                     Date: document.getElementById(`date-${entryId}`).value,
                     Region: document.getElementById(`region-${entryId}`).value,
                     Province: document.getElementById(`province-${entryId}`).value,
                     CityRegency: document.getElementById(`city-${entryId}`).value,
                     Branch: document.getElementById(`branch-${entryId}`).value,
                     Sales: document.getElementById(`sales-${entryId}`).value,
-                    Role: currentRole,
+                    billingID: document.getElementById(`billingId-${entryId}`)?.value || '',
+                    ProspectName: document.getElementById(`prospectName-${entryId}`)?.value || '',
+                    Phone: document.getElementById(`phone-${entryId}`)?.value || '',
+                    Address: document.getElementById(`address-${entryId}`)?.value || '',
+                    Subdistric: document.getElementById(`subdistric-${entryId}`)?.value || '',
+                    IspExisting: document.getElementById(`ispExisting-${entryId}`)?.value || '',
+                    MonthlyFee: document.getElementById(`monthlyFee-${entryId}`)?.value || '',
+                    Source: document.getElementById(`source-${entryId}`)?.value || '',
+                    Status: document.getElementById(`status-${entryId}`)?.value || '',
+                    Segmentation: document.getElementById(`segmentation-${entryId}`)?.value || '',
+                    Service: document.getElementById(`service-${entryId}`)?.value || '',
+                    Bundling: document.getElementById(`bundling-${entryId}`)?.value || '',
+                    Revenue: document.getElementById(`revenue-${entryId}`)?.value || ''
                 };
 
-                if (currentRole === 'Store') {
-                    entryData.BillingID = document.getElementById(`billingId-${entryId}`)?.value || '',
-                    entryData.Service = document.getElementById(`service-${entryId}`)?.value || '',
-                    entryData.Bundling = document.getElementById(`bundling-${entryId}`)?.value || '',
-                    entryData.Revenue = document.getElementById(`revenue-${entryId}`)?.value || '';
-                } else {
-                    entryData.ProspectName = document.getElementById(`prospectName-${entryId}`).value,
-                    entryData.Phone = document.getElementById(`phone-${entryId}`).value,
-                    entryData.Address = document.getElementById(`address-${entryId}`).value,
-                    entryData.Subdistric = document.getElementById(`subdistric-${entryId}`).value,
-                    entryData.IspExisting = document.getElementById(`ispExisting-${entryId}`).value,
-                    entryData.MonthlyFee = document.getElementById(`monthlyFee-${entryId}`).value || 'N/A', // Non-mandatory
-                    entryData.Source = document.getElementById(`source-${entryId}`).value,
-                    entryData.Status = document.getElementById(`status-${entryId}`).value,
-                    entryData.Segmentation = document.getElementById(`segmentation-${entryId}`)?.value || '',
-                    entryData.Service = document.getElementById(`service-${entryId}`)?.value || '',
-                    entryData.Revenue = document.getElementById(`revenue-${entryId}`)?.value || '';
-                }
                 data.push(entryData);
             });
 
