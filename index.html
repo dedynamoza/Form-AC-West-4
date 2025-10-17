@@ -321,6 +321,42 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Branch Tanjung Jabung Barat Kuala Tungkal": ["Fachrul Rozi"],
         };
 
+        // Data Master Sales untuk Role Store: Branch -> Sales (hanya sales store)
+        const STORE_SALES_DATA = {
+            "Branch Palembang Sekip Jaya": ["ADLAH NADHILAH", "LIA DIANA"],
+            "Branch Palembang Karya Jaya": ["ERIKA DESTIYANI"],
+            "Branch Palembang 8 Ulu": ["MAHARANY AFRI ARIESTA", "TASYA YOLANDA"],
+            "Branch Palembang Kalidoni": ["ARIZKIYANTI", "SITI PUTRI FADILAH ORCHIDLYA"],
+            "Branch Palembang Sukodadi": ["SRI SUNDARI", "SITI TARTILA ULINDA MARETA"],
+            "Branch Musi Banyuasin Pangkalan Gresik": ["CINDY KALIANA TANTRI", "HARANI KRISMA"],
+            "Branch Palembang Sukamaju": ["AMELIA HANDAYANI", "INDAH PERMATA SARI"],
+            "Branch Banyuasin Sungsang": ["NURULIA PUTRI AMANDA"],
+            "Branch Ogan Komering Ilir Kayu Agung": ["CITRA ANGGRAINI", "DWITARI JULIASTIKA"],
+            "Branch Ogan Komering Ilir Tugu Mulyo": ["FRANSISKA ADELA", "NUR FIDIAH"],
+            "Branch Banyuasin Betung": ["LESTARI", "NADILA OKTAVIANI"],
+            "Branch Banyuasin Pangkalan Balai": ["NONIK WULANTIKA", "RETNO CHANDYARUM"],
+            "Branch Musi Banyuasin Sungai Lilin": ["JOSI IMELDA PRASETIA PUTRI", "YUKI RAMADONA"],
+            "Branch Musi Banyausin Bayung Lecir": ["DEWI SRI WAHYUNI", "DIAN SEPTI ANGGRAINI"],
+            "Branch Pangkal Pinang Batin Tikal": ["AYU VIALIANTY", "DHEA MEYLANI"],
+            "Branch Bangka Sungai Liat": ["CHRISNA SAGITA", "LISA JANUARTI"],
+            "Branch Bangka Barat Kelapa": ["SINTIA", "YENI PIONITA"],
+            "Branch Bangka Barat Muntok": ["ALFARIZA ESTETIKA"],
+            "Branch Bengkulu Jembatan Kecil": ["MONICA CHINTYA NATASA", "VETTY WAHYUNI PUTRI"],
+            "Branch Bandar Lampung Rawa Laut": ["AYU WULANDARI", "SUCI NATA KUSUMA"],
+            "Branch Bandar Bandar Lampung Campang Raya": ["SHOVIA CAMILIA SALSABILLA"],
+            "Branch Bandar Lampung Tanjung Senang": ["BELLA MUSTIKA", "MAULIDA YUNISAH PUSPARINI"],
+            "Branch Bandar Lampung Rajabasa": ["QATRUNNADA NAZHIFA", "SYIFA ANASTASIA ARDHEA"],
+            "Branch Lampung Selatan Kalianda": ["DEFLI YANTI"],
+            "Branch Metro Hadimulyo Barat": ["EVI MELIANA", "RIFATIN CHOLIDIA"],
+            "Branch Lampung Tengah Bandar Jaya": ["ANISA SILVIA", "PUSPITA TASWAN"],
+            "Branch Tulang Bawang Barat Menggala": ["INGKA KRISTY", "MELDALISA"],
+            "Branch Mesuji Umbulan Tedunggeram": ["MONICA LUSIANA", "NABILLAHANA EKANIDYA"],
+            "Branch Tulang Bawang Barat Banjar Agung": ["HENI NOVITASARI", "MERLINA SIAHAAN"],
+            "Branch Jambi Thehok": ["DELFI PUTRI DAMAYARLI", "ISLAHIYAH MULIA"],
+            "Branch Jambi Kenali Besar": ["DESNI MARLYANI", "MISTI MARDIANA"],
+            "Branch Jambi Kenali Asam Bawah": ["LISA ANGGRAINI"],
+        };
+
         // Data Dropdown Statis
         const ISP_EXISTING = ["Iconnet", "Telkom", "Local ISP", "Gasnet", "My Republic", "Oxygen", "Firstmedia", "XL Home", "CBN", "Fibernet", "RT/RW Net", "Belum Menggunakan Internet Cable"];
         const SOURCE_OPTIONS = ["Canvassing", "Flyering", "Social Media", "Referrence", "TVC/Baligho/Banner", "Open Booth/Roadshow/Event", "Walk in Store"];
@@ -540,6 +576,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         storeBtn.classList.add('bg-gradient-to-r', 'from-pink-300', 'to-pink-500', 'text-white');
                     }
                 }
+
+                // Update sales dropdown for this entry
+                updateLocationDropdowns(id, 'branch');
             });
 
             if (role === 'AC') {
@@ -892,7 +931,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             // --- Logika Branch -> Sales ---
             if (changedDropdownId === 'branch' || changedDropdownId === 'city' || changedDropdownId === 'province' || changedDropdownId === 'region') {
                 if (selectedBranch) {
-                    const sales = SALES_DATA[selectedBranch] || [];
+                    // Pilih data sales berdasarkan role
+                    const salesData = currentRole === 'Store' ? STORE_SALES_DATA : SALES_DATA;
+                    const sales = salesData[selectedBranch] || [];
                     populateDropdown(salesSelect, sales.sort(), "Pilih Sales...", "");
                     salesSelect.disabled = false;
                 } else {
@@ -1122,6 +1163,15 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             // Listener untuk status change untuk update additional fields
             const statusSelectForAdditional = newEntry.querySelector(`#status-${newId}`);
             statusSelectForAdditional.addEventListener('change', () => updateAdditionalFields(newId));
+
+            // Listener untuk role change untuk update sales dropdown
+            const roleButtons = newEntry.querySelectorAll(`#ac-btn-${newId}, #ae-btn-${newId}, #store-btn-${newId}`);
+            roleButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update sales dropdown setelah role berubah
+                    setTimeout(() => updateLocationDropdowns(newId, 'branch'), 0);
+                });
+            });
 
             // --- AKHIR PERUBAHAN UTAMA ---
 
