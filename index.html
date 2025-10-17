@@ -14,6 +14,8 @@
         /* Mengatur font dasar dan latar belakang gradasi untuk tampilan modern */
         :root {
             --bg-gradient: linear-gradient(135deg, #87ceeb 0%, #dda0dd 100%);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             /* Gradasi warna yang profesional dan menarik (dari biru laut ke ungu) */
@@ -203,6 +205,16 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
         // Global role variable, default AC
         let currentRole = 'AC';
+
+        // Data for Store role
+        const PRODUCT_PRICES = {
+            "Biznet Home Internet 0D": 250000,
+            "Biznet Home Internet 1D": 375000,
+            "Biznet Home Internet 2D": 575000,
+            "Biznet Home Gamers": 700000
+        };
+
+        const BUNDLING_OPTIONS = ["2+1", "3+1", "6+2", "6+6", "8+4", "9+3", "12+5"];
 
         /**
          * Update monthly fee field based on current role for all entries.
@@ -490,34 +502,61 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         }
 
         /**
-         * Toggle role antara AC dan AE.
+         * Select role antara AC, AE, dan Store.
          * @param {number} entryId - ID entri yang akan diubah.
+         * @param {string} role - Role yang dipilih ('AC', 'AE', 'Store').
          */
-        function toggleRole(entryId) {
-            const roleSwitcher = document.getElementById(`role-switcher-${entryId}`);
-            const acLabel = document.getElementById(`ac-label-${entryId}`);
-            const aeLabel = document.getElementById(`ae-label-${entryId}`);
+        function selectRole(entryId, role) {
+            currentRole = role;
             const headerTitle = document.querySelector('header h1');
             const root = document.documentElement;
 
-            if (currentRole === 'AC') {
-                currentRole = 'AE';
-                acLabel.style.color = 'black';
-                aeLabel.style.color = 'green';
-                headerTitle.textContent = 'ACCOUNT EXECUTIVE PROSPECT';
-                // Gradasi biru muda untuk AE
-                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #87ceeb 0%, #4682b4 100%)');
-            } else {
-                currentRole = 'AC';
-                acLabel.style.color = 'green';
-                aeLabel.style.color = 'black';
+            // Update buttons for all entries
+            const entries = document.querySelectorAll('.data-entry-card');
+            entries.forEach(entry => {
+                const id = entry.getAttribute('data-id');
+                const acBtn = document.getElementById(`ac-btn-${id}`);
+                const aeBtn = document.getElementById(`ae-btn-${id}`);
+                const storeBtn = document.getElementById(`store-btn-${id}`);
+
+                if (acBtn && aeBtn && storeBtn) {
+                    // Reset all buttons
+                    acBtn.classList.remove('bg-gradient-to-r', 'from-orange-300', 'to-orange-500', 'text-white');
+                    aeBtn.classList.remove('bg-gradient-to-r', 'from-blue-300', 'to-blue-500', 'text-white');
+                    storeBtn.classList.remove('bg-gradient-to-r', 'from-pink-300', 'to-pink-500', 'text-white');
+
+                    acBtn.classList.add('text-gray-600');
+                    aeBtn.classList.add('text-gray-600');
+                    storeBtn.classList.add('text-gray-600');
+
+                    if (role === 'AC') {
+                        acBtn.classList.remove('text-gray-600');
+                        acBtn.classList.add('bg-gradient-to-r', 'from-orange-300', 'to-orange-500', 'text-white');
+                    } else if (role === 'AE') {
+                        aeBtn.classList.remove('text-gray-600');
+                        aeBtn.classList.add('bg-gradient-to-r', 'from-blue-300', 'to-blue-500', 'text-white');
+                    } else if (role === 'Store') {
+                        storeBtn.classList.remove('text-gray-600');
+                        storeBtn.classList.add('bg-gradient-to-r', 'from-pink-300', 'to-pink-500', 'text-white');
+                    }
+                }
+            });
+
+            if (role === 'AC') {
                 headerTitle.textContent = 'AREA COORDINATOR PROSPECT';
-                // Gradasi orange untuk AC
-                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ffa500 0%, #ff8c00 100%)');
+                // Gradasi orange soft untuk AC
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ffdab9 0%, #ffa500 100%)');
+            } else if (role === 'AE') {
+                headerTitle.textContent = 'ACCOUNT EXECUTIVE PROSPECT';
+                // Gradasi biru muda soft untuk AE
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #add8e6 0%, #87ceeb 100%)');
+            } else if (role === 'Store') {
+                headerTitle.textContent = 'STORE PROSPECT';
+                // Gradasi pink soft untuk Store
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ffb6c1 0%, #ff69b4 100%)');
             }
 
             // Update additional fields untuk semua entri
-            const entries = document.querySelectorAll('.data-entry-card');
             entries.forEach(entry => {
                 const id = entry.getAttribute('data-id');
                 updateAdditionalFields(id);
@@ -539,10 +578,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             const statusSelect = document.getElementById(`status-${entryId}`);
             const selectedStatus = statusSelect.value;
 
-            additionalFields.innerHTML = '';
-
             if (currentRole === 'AE') {
-                // Untuk semua status, tambah Segmentation
+                // Untuk AE, tambah Segmentation
                 let html = `
                     <div class="form-group">
                         <label for="segmentation-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Segmentation</label>
@@ -577,6 +614,91 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 setTimeout(() => {
                     populateDropdown(document.getElementById(`segmentation-${entryId}`), SEGMENTATION_OPTIONS, "Pilih Segmentation...", "");
                 }, 0);
+
+                // Show all fields for AE
+                document.getElementById(`phone-group-${entryId}`).style.display = 'block';
+                document.getElementById(`address-group-${entryId}`).style.display = 'block';
+                document.getElementById(`subdistric-group-${entryId}`).style.display = 'block';
+                document.getElementById(`isp-group-${entryId}`).style.display = 'block';
+                document.getElementById(`monthly-fee-group-${entryId}`).style.display = 'block';
+                document.getElementById(`source-group-${entryId}`).style.display = 'block';
+                document.getElementById(`status-group-${entryId}`).style.display = 'block';
+
+                // Reset labels
+                document.getElementById(`sales-store-label-${entryId}`).textContent = 'Sales';
+                document.getElementById(`prospect-billing-group-${entryId}`).style.display = 'block';
+                document.getElementById(`prospect-billing-label-${entryId}`).textContent = 'Prospect Name';
+            } else if (currentRole === 'Store') {
+                // For Store role, change fields
+                let html = `
+                    <div class="form-group">
+                        <label for="billingId-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Billing ID <span class="text-red-500">*</span></label>
+                        <input type="text" id="billingId-${entryId}" required maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="10 digit angka">
+                    </div>
+                    <div class="form-group">
+                        <label for="service-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Service <span class="text-red-500">*</span></label>
+                        <select id="service-${entryId}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
+                            <!-- Opsi diisi oleh JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bundling-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Bundling <span class="text-red-500">*</span></label>
+                        <select id="bundling-${entryId}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
+                            <!-- Opsi diisi oleh JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="revenue-${entryId}" class="block text-sm font-medium text-gray-700 mb-2">Revenue</label>
+                        <input type="text" id="revenue-${entryId}" readonly class="w-full border-gray-300 rounded-lg p-3 bg-gray-100 touch-target">
+                    </div>
+                `;
+
+                additionalFields.innerHTML = html;
+
+                // Populate service and bundling dropdowns
+                setTimeout(() => {
+                    populateDropdown(document.getElementById(`service-${entryId}`), Object.keys(PRODUCT_PRICES), "Pilih Service...", "");
+                    populateDropdown(document.getElementById(`bundling-${entryId}`), BUNDLING_OPTIONS, "Pilih Bundling...", "");
+
+                    // Add event listeners for revenue calculation
+                    document.getElementById(`service-${entryId}`).addEventListener('change', () => calculateRevenue(entryId));
+                    document.getElementById(`bundling-${entryId}`).addEventListener('change', () => calculateRevenue(entryId));
+
+                    // Add event listeners for save button status update
+                    document.getElementById(`billingId-${entryId}`).addEventListener('input', updateSaveButtonStatus);
+                    document.getElementById(`service-${entryId}`).addEventListener('change', updateSaveButtonStatus);
+                    document.getElementById(`bundling-${entryId}`).addEventListener('change', updateSaveButtonStatus);
+                }, 0);
+
+                // Hide certain fields for Store
+                document.getElementById(`phone-group-${entryId}`).style.display = 'none';
+                document.getElementById(`address-group-${entryId}`).style.display = 'none';
+                document.getElementById(`subdistric-group-${entryId}`).style.display = 'none';
+                document.getElementById(`isp-group-${entryId}`).style.display = 'none';
+                document.getElementById(`monthly-fee-group-${entryId}`).style.display = 'none';
+                document.getElementById(`source-group-${entryId}`).style.display = 'none';
+                document.getElementById(`status-group-${entryId}`).style.display = 'none';
+
+                // For Store, keep label as 'Sales', hide prospect name field
+                document.getElementById(`sales-store-label-${entryId}`).textContent = 'Sales';
+                document.getElementById(`prospect-billing-group-${entryId}`).style.display = 'none';
+            } else {
+                // For AC, clear additional fields
+                additionalFields.innerHTML = '';
+
+                // Show all fields for AC
+                document.getElementById(`phone-group-${entryId}`).style.display = 'block';
+                document.getElementById(`address-group-${entryId}`).style.display = 'block';
+                document.getElementById(`subdistric-group-${entryId}`).style.display = 'block';
+                document.getElementById(`isp-group-${entryId}`).style.display = 'block';
+                document.getElementById(`monthly-fee-group-${entryId}`).style.display = 'block';
+                document.getElementById(`source-group-${entryId}`).style.display = 'block';
+                document.getElementById(`status-group-${entryId}`).style.display = 'block';
+
+                // Reset labels
+                document.getElementById(`sales-store-label-${entryId}`).textContent = 'Sales';
+                document.getElementById(`prospect-billing-group-${entryId}`).style.display = 'block';
+                document.getElementById(`prospect-billing-label-${entryId}`).textContent = 'Prospect Name';
             }
         }
 
@@ -615,6 +737,28 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                     revenueInput.value = REVENUE_MAP[selectedService] || '';
                     revenueInput.readOnly = true;
                 }
+            }
+        }
+
+        /**
+         * Calculate revenue for Store role based on service and bundling.
+         * @param {number} entryId - ID entri.
+         */
+        function calculateRevenue(entryId) {
+            const serviceSelect = document.getElementById(`service-${entryId}`);
+            const bundlingSelect = document.getElementById(`bundling-${entryId}`);
+            const revenueInput = document.getElementById(`revenue-${entryId}`);
+
+            const selectedService = serviceSelect.value;
+            const selectedBundling = bundlingSelect.value;
+
+            if (selectedService && selectedBundling) {
+                const price = PRODUCT_PRICES[selectedService];
+                const bundlingMultiplier = parseInt(selectedBundling.split('+')[0]);
+                const revenue = price * bundlingMultiplier;
+                revenueInput.value = revenue.toLocaleString('id-ID');
+            } else {
+                revenueInput.value = '';
             }
         }
 
@@ -774,12 +918,9 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         <h3 class="text-lg sm:text-xl font-bold text-gray-800">Prospect</h3>
                         <div class="flex items-center space-x-4">
                             <div class="flex items-center space-x-2">
-                                <span id="ac-label-${id}" class="font-bold" style="color: green;">AC</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="role-switcher-${id}" class="sr-only peer" onchange="toggleRole(${id})">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                </label>
-                                <span id="ae-label-${id}" class="font-bold" style="color: black;">AE</span>
+                                <button type="button" id="ac-btn-${id}" class="px-3 py-1 rounded-lg font-bold transition duration-300" onclick="selectRole(${id}, 'AC')">AC</button>
+                                <button type="button" id="ae-btn-${id}" class="px-3 py-1 rounded-lg font-bold transition duration-300" onclick="selectRole(${id}, 'AE')">AE</button>
+                                <button type="button" id="store-btn-${id}" class="px-3 py-1 rounded-lg font-bold transition duration-300" onclick="selectRole(${id}, 'Store')">Store</button>
                             </div>
                             ${id > 0 ? `
                                 <button type="button" onclick="deleteEntry(${id})"
@@ -829,17 +970,17 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                             </select>
                         </div>
                         
-                        <!-- Sales -->
-                        <div class="form-group">
-                            <label for="sales-${id}" class="block text-sm font-medium text-gray-700 mb-2">Sales <span class="text-red-500">*</span></label>
+                        <!-- Sales / Store -->
+                        <div class="form-group" id="sales-store-group-${id}">
+                            <label for="sales-${id}" class="block text-sm font-medium text-gray-700 mb-2" id="sales-store-label-${id}">Sales <span class="text-red-500">*</span></label>
                             <select id="sales-${id}" required data-id="${id}" data-type="sales" disabled class="w-full border-gray-300 rounded-lg p-3 bg-gray-50 disabled:opacity-75 touch-target">
                                 <option value="" disabled selected>Pilih Sales...</option>
                             </select>
                         </div>
 
-                        <!-- Prospect Name -->
-                        <div class="form-group">
-                            <label for="prospectName-${id}" class="block text-sm font-medium text-gray-700 mb-2">Prospect Name <span class="text-red-500">*</span></label>
+                        <!-- Prospect Name / Billing ID -->
+                        <div class="form-group" id="prospect-billing-group-${id}">
+                            <label for="prospectName-${id}" class="block text-sm font-medium text-gray-700 mb-2" id="prospect-billing-label-${id}">Prospect Name <span class="text-red-500">*</span></label>
                             <input type="text" id="prospectName-${id}" required minlength="4"
                                    oninput="this.value = toProperCase(this.value.replace(/[^a-zA-Z0-9 ]/g, ''));"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: Piscesco Budiarta">
@@ -847,7 +988,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         </div>
 
                         <!-- Phone -->
-                        <div class="form-group">
+                        <div class="form-group" id="phone-group-${id}">
                             <label for="phone-${id}" class="block text-sm font-medium text-gray-700 mb-2">Phone <span class="text-red-500">*</span></label>
                             <input type="tel" id="phone-${id}" required minlength="4"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
@@ -855,7 +996,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         </div>
 
                         <!-- Address -->
-                        <div class="form-group">
+                        <div class="form-group" id="address-group-${id}">
                             <label for="address-${id}" class="block text-sm font-medium text-gray-700 mb-2">Address <span class="text-red-500">*</span></label>
                             <input type="text" id="address-${id}" required minlength="4"
                                    oninput="this.value = toProperCase(this.value);"
@@ -863,7 +1004,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         </div>
 
                         <!-- Subdistric -->
-                        <div class="form-group">
+                        <div class="form-group" id="subdistric-group-${id}">
                             <label for="subdistric-${id}" class="block text-sm font-medium text-gray-700 mb-2">Subdistric (Kelurahan) <span class="text-red-500">*</span></label>
                             <input type="text" id="subdistric-${id}" required minlength="4"
                                    oninput="this.value = toProperCase(this.value);"
@@ -871,7 +1012,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         </div>
 
                         <!-- Isp Existing -->
-                        <div class="form-group">
+                        <div class="form-group" id="isp-group-${id}">
                             <label for="ispExisting-${id}" class="block text-sm font-medium text-gray-700 mb-2">ISP Existing <span class="text-red-500">*</span></label>
                             <select id="ispExisting-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
@@ -879,14 +1020,14 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         </div>
 
                         <!-- Monthly Fee -->
-                        <div class="form-group">
+                        <div class="form-group" id="monthly-fee-group-${id}">
                             <label for="monthlyFee-${id}" class="block text-sm font-medium text-gray-700 mb-2">Monthly Fee Existing (opsional) </label>
                             <input type="number" id="monthlyFee-${id}"
                                    class="w-full border-gray-300 rounded-lg p-3 touch-target" placeholder="Contoh: 250000">
                         </div>
 
                         <!-- Source -->
-                        <div class="form-group">
+                        <div class="form-group" id="source-group-${id}">
                             <label for="source-${id}" class="block text-sm font-medium text-gray-700 mb-2">Source <span class="text-red-500">*</span></label>
                             <select id="source-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
@@ -894,7 +1035,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                         </div>
 
                         <!-- Status -->
-                        <div class="form-group">
+                        <div class="form-group" id="status-group-${id}">
                             <label for="status-${id}" class="block text-sm font-medium text-gray-700 mb-2">Status <span class="text-red-500">*</span></label>
                             <select id="status-${id}" required class="w-full border-gray-300 rounded-lg p-3 touch-target">
                                 <!-- Opsi diisi oleh JS -->
@@ -1014,18 +1155,33 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             let allValid = true;
             entries.forEach(entry => {
                 const entryId = entry.getAttribute('data-id');
-                const requiredInputs = entry.querySelectorAll('[required]');
-                requiredInputs.forEach(input => {
-                    // Check if the input is empty or invalid based on its constraints
-                    if (!input.checkValidity()) {
+
+                if (currentRole === 'Store') {
+                    // For Store role, check specific required fields
+                    const requiredFields = [
+                        `date-${entryId}`, `region-${entryId}`, `province-${entryId}`, `city-${entryId}`, `branch-${entryId}`, `sales-${entryId}`,
+                        `billingId-${entryId}`, `service-${entryId}`, `bundling-${entryId}`
+                    ];
+                    requiredFields.forEach(fieldId => {
+                        const field = document.getElementById(fieldId);
+                        if (field && (!field.value || !field.checkValidity())) {
+                            allValid = false;
+                        }
+                    });
+                } else {
+                    // For AC and AE, check all required inputs
+                    const requiredInputs = entry.querySelectorAll('[required]');
+                    requiredInputs.forEach(input => {
+                        if (!input.checkValidity()) {
+                            allValid = false;
+                        }
+                    });
+
+                    // Cek apakah status sudah dipilih (untuk semua role)
+                    const statusSelect = document.getElementById(`status-${entryId}`);
+                    if (!statusSelect.value) {
                         allValid = false;
                     }
-                });
-
-                // Cek apakah status sudah dipilih (untuk semua role)
-                const statusSelect = document.getElementById(`status-${entryId}`);
-                if (!statusSelect.value) {
-                    allValid = false;
                 }
             });
 
@@ -1120,26 +1276,34 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 const entryId = entry.getAttribute('data-id');
                 
                 // Kumpulkan semua nilai dari input/select di dalam entri ini
-                const entryData = {
+                let entryData = {
                     Date: document.getElementById(`date-${entryId}`).value,
                     Region: document.getElementById(`region-${entryId}`).value,
                     Province: document.getElementById(`province-${entryId}`).value,
                     CityRegency: document.getElementById(`city-${entryId}`).value,
                     Branch: document.getElementById(`branch-${entryId}`).value,
                     Sales: document.getElementById(`sales-${entryId}`).value,
-                    ProspectName: document.getElementById(`prospectName-${entryId}`).value,
-                    Phone: document.getElementById(`phone-${entryId}`).value,
-                    Address: document.getElementById(`address-${entryId}`).value,
-                    Subdistric: document.getElementById(`subdistric-${entryId}`).value,
-                    IspExisting: document.getElementById(`ispExisting-${entryId}`).value,
-                    MonthlyFee: document.getElementById(`monthlyFee-${entryId}`).value || 'N/A', // Non-mandatory
-                    Source: document.getElementById(`source-${entryId}`).value,
-                    Status: document.getElementById(`status-${entryId}`).value,
                     Role: currentRole,
-                    Segmentation: document.getElementById(`segmentation-${entryId}`)?.value || '',
-                    Service: document.getElementById(`service-${entryId}`)?.value || '',
-                    Revenue: document.getElementById(`revenue-${entryId}`)?.value || '',
                 };
+
+                if (currentRole === 'Store') {
+                    entryData.BillingID = document.getElementById(`billingId-${entryId}`)?.value || '',
+                    entryData.Service = document.getElementById(`service-${entryId}`)?.value || '',
+                    entryData.Bundling = document.getElementById(`bundling-${entryId}`)?.value || '',
+                    entryData.Revenue = document.getElementById(`revenue-${entryId}`)?.value || '';
+                } else {
+                    entryData.ProspectName = document.getElementById(`prospectName-${entryId}`).value,
+                    entryData.Phone = document.getElementById(`phone-${entryId}`).value,
+                    entryData.Address = document.getElementById(`address-${entryId}`).value,
+                    entryData.Subdistric = document.getElementById(`subdistric-${entryId}`).value,
+                    entryData.IspExisting = document.getElementById(`ispExisting-${entryId}`).value,
+                    entryData.MonthlyFee = document.getElementById(`monthlyFee-${entryId}`).value || 'N/A', // Non-mandatory
+                    entryData.Source = document.getElementById(`source-${entryId}`).value,
+                    entryData.Status = document.getElementById(`status-${entryId}`).value,
+                    entryData.Segmentation = document.getElementById(`segmentation-${entryId}`)?.value || '',
+                    entryData.Service = document.getElementById(`service-${entryId}`)?.value || '',
+                    entryData.Revenue = document.getElementById(`revenue-${entryId}`)?.value || '';
+                }
                 data.push(entryData);
             });
 
@@ -1229,12 +1393,11 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         document.addEventListener('DOMContentLoaded', function() {
             addEntry();
 
-            // Set default role labels
+            // Set default role to AC and update buttons
             const firstEntry = document.querySelector('.data-entry-card');
             if (firstEntry) {
                 const firstId = firstEntry.getAttribute('data-id');
-                document.getElementById(`ac-label-${firstId}`).style.color = 'green';
-                document.getElementById(`ae-label-${firstId}`).style.color = 'black';
+                selectRole(firstId, 'AC'); // Set default to AC
             }
 
             // Update monthly fee for initial role
