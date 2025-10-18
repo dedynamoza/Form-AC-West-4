@@ -212,16 +212,20 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Biznet Home Internet 1D": 375000,
             "Biznet Home Internet 2D": 575000,
             "Biznet Home Gamers": 700000,
-           "Biznet Metronet 1D Rent": 1050000,
-            "Biznet Metronet 2D Rent": 1750000,
-            "Biznet Metronet 3D Rent": 2750000,
-            "Biznet Metronet 4D Rent": 6550000,
-            "Biznet Metronet 5D Rent": 12550000,
+            "Biznet Home Internet 0D Rent": 225000,
+            "Biznet Home Internet 1D Rent": 425000,
+            "Biznet Home Internet 2D Rent": 625000,
+            "Biznet Home Gamers Rent": 750000,
             "Biznet Metronet 1D": 1000000,
             "Biznet Metronet 2D": 1700000,
             "Biznet Metronet 3D": 2700000,
             "Biznet Metronet 4D": 6500000,
-            "Biznet Metronet 5D": 12500000
+            "Biznet Metronet 5D": 12500000,
+            "Biznet Metronet 1D Rent": 1050000,
+            "Biznet Metronet 2D Rent": 1750000,
+            "Biznet Metronet 3D Rent": 2750000,
+            "Biznet Metronet 4D Rent": 6550000,
+            "Biznet Metronet 5D Rent": 12550000
         };
 
         const BUNDLING_OPTIONS = ["2+1", "3+1", "6+2", "6+6", "8+4", "9+3", "12+5", "12+2",];
@@ -323,7 +327,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Branch Palembang Talang Kelapa": ["M Masri Hadiwijaya", "Muhammad Zen Zidan"],
             "Branch Palembang Karya Jaya": ["Geri Esmemed", "Faisal Anggara", "Erika Destiyani", "Dicky Masryansyah Eka Putra", "M Masri Hadiwijaya", "Muhammad Zen Zidan"],
             "Branch Palembang Sekip Jaya": ["Adiyan Wardi","Wahyu Riski Pratama", "M Masri Hadiwijaya", "Lia Diana", "Adlah Nadhilah", "Hadi Oktaranda", "Arif Kurniawan", "Tego Lesmono", "Syifa Anastasia Ardhea", "Bima Pratama Saputro", "Muhammad Zen Zidan"],
-            "Branch Jambi Thehok": ["Delfi Putri Damayarli", "Islahiyah Mulia", "Moch Syafi I", "Muhammad Hanif Ramadhan", "Novianto", "Tommi Sahirman", "Fachrul Rozi"],
+            "Branch Jambi Thehok": ["Delfi Putri Damayarli","Islahiyah Mulia","Moch Syafi I", "Muhammad Hanif Ramadhan", "Novianto", "Tommi Sahirman", "Fachrul Rozi"],
             "Branch Jambi Kenali Besar": ["Desni Marlyani", "Hariya Prayoga", "Misti Mardiana", "Nima Noviarni", "Fachrul Rozi"],
             "Branch Jambi Kenali Asam Bawah": ["Faudi Aria Gusti", "Ferry Ferdiansyah", "Anggraini","Fachrul Rozi"],
             "Branch Muaro Jambi Sengeti": ["Fachrul Rozi"],
@@ -808,8 +812,13 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
             if (selectedService && selectedBundling) {
                 const price = PRODUCT_PRICES[selectedService];
-                const bundlingMultiplier = parseInt(selectedBundling.split('+')[0]);
-                const revenue = price * bundlingMultiplier;
+                const [first, second] = selectedBundling.split('+').map(Number);
+                let revenue;
+                if (selectedService.includes('Rent')) {
+                    revenue = price * first + 50000 * second;
+                } else {
+                    revenue = price * first;
+                }
                 revenueInput.value = revenue.toLocaleString('id-ID');
             } else {
                 revenueInput.value = '';
