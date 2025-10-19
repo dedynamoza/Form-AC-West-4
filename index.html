@@ -211,11 +211,11 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Biznet Home Internet 0D": 175000,
             "Biznet Home Internet 1D": 375000,
             "Biznet Home Internet 2D": 575000,
-            "Biznet Home Gamers": 700000,
+            "Biznet Home Gamers 3D": 700000,
             "Biznet Home Internet 0D Rent": 225000,
             "Biznet Home Internet 1D Rent": 425000,
             "Biznet Home Internet 2D Rent": 625000,
-            "Biznet Home Gamers Rent": 750000,
+            "Biznet Home Gamers 3D Rent": 750000,
             "Biznet Metronet 1D": 1000000,
             "Biznet Metronet 2D": 1700000,
             "Biznet Metronet 3D": 2700000,
@@ -227,6 +227,136 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             "Biznet Metronet 4D Rent": 6550000,
             "Biznet Metronet 5D Rent": 12550000
         };
+
+        // Special data for Bengkulu (RO 16 Jambi, Bengkulu, Branch Bengkulu Jembatan Kecil)
+        const BENGKULU_PRODUCT_PRICES = {
+            "Biznet Home Internet 0DS": 175000,
+            "Biznet Home Internet 1DS": 350000,
+            "Biznet Home Internet 2DS": 550000,
+            "Biznet Home Gamers 3DS": 650000,
+            "Biznet Home Internet 0D Rent": 225000,
+            "Biznet Home Internet 1D Rent": 400000,
+            "Biznet Home Internet 2D Rent": 600000,
+            "Biznet Home Gamers 3DS Rent": 700000,
+            "Biznet Metronet 1DS": 1150000,
+            "Biznet Metronet 2DS": 2000000,
+            "Biznet Metronet 3DS": 3250000,
+            "Biznet Metronet 1DS Rent": 1200000,
+            "Biznet Metronet 2DS Rent": 2050000,
+            "Biznet Metronet 3DS Rent": 3300000
+        };
+
+        const BENGKULU_SERVICE_OPTIONS = [
+            "Biznet Metronet 1DS Rent",
+            "Biznet Metronet 2DS Rent",
+            "Biznet Metronet 3DS Rent",
+            "Biznet Metronet 1DS",
+            "Biznet Metronet 2DS",
+            "Biznet Metronet 3DS",
+            "Biznet Dedicated Internet 80 Mbps",
+            "Biznet Dedicated Internet 100 Mbps",
+            "Biznet Dedicated Internet 120 Mbps",
+            "Biznet Dedicated Internet 160 Mbps",
+            "Biznet Dedicated Internet 200 Mbps",
+            "Biznet Dedicated Internet 240 Mbps",
+            "Biznet Dedicated Internet 280 Mbps",
+            "Biznet Dedicated Internet 320 Mbps",
+            "Biznet Dedicated Internet 360 Mbps",
+            "Biznet Dedicated Internet 400 Mbps",
+            "Biznet Dedicated Internet 500 Mbps",
+            "Biznet Dedicated Internet 600 Mbps",
+            "Biznet Dedicated Internet 700 Mbps",
+            "Biznet Dedicated Internet 800 Mbps",
+            "Biznet Dedicated Internet 900 Mbps",
+            "Biznet Dedicated Internet 1 Gbps",
+            "Biznet Dedicated Internet 1.2 Gbps",
+            "Biznet Dedicated Internet 1.6 Gbps",
+            "Biznet Dedicated Internet 2 Gbps",
+            "Biznet Dedicated Internet 3 Gbps",
+            "Biznet Dedicated Internet 4 Gbps",
+            "Biznet Dedicated Internet 10 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 160 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 200 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 240 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 280 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 320 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 360 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 400 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 500 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 600 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 700 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 800 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 900 Mbps",
+            "Biznet Dedicated Educationnet/Healthnet 1 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 1.2 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 1.6 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 2 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 3 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 4 Gbps",
+            "Biznet Dedicated Educationnet/Healthnet 10 Gbps",
+            "Biznet Dedicated Hospitalitynet 80 Mbps",
+            "Biznet Dedicated Hospitalitynet 100 Mbps",
+            "Biznet Dedicated Hospitalitynet 120 Mbps",
+            "Biznet Dedicated Hospitalitynet 160 Mbps",
+            "Biznet Dedicated Hospitalitynet 200 Mbps",
+            "Biznet Dedicated Hospitalitynet 240 Mbps",
+            "Biznet Dedicated Hospitalitynet 280 Mbps",
+            "Biznet Dedicated Hospitalitynet 320 Mbps",
+            "Biznet Dedicated Hospitalitynet 360 Mbps",
+            "Biznet Dedicated Hospitalitynet 400 Mbps",
+            "Biznet Dedicated Hospitalitynet 500 Mbps",
+            "Biznet Dedicated Hospitalitynet 600 Mbps",
+            "Biznet Dedicated Hospitalitynet 700 Mbps",
+            "Biznet Dedicated Hospitalitynet 800 Mbps",
+            "Biznet Dedicated Hospitalitynet 900 Mbps",
+            "Biznet Dedicated Hospitalitynet 1 Gbps",
+            "Biznet Dedicated Hospitalitynet 1.2 Gbps",
+            "Biznet Dedicated Hospitalitynet 1.6 Gbps",
+            "Biznet Dedicated Internet LKPP 60 Mbps",
+            "Biznet Dedicated Internet LKPP 80 Mbps",
+            "Biznet Dedicated Internet LKPP 100 Mbps",
+            "Biznet Dedicated Internet LKPP 120 Mbps",
+            "Biznet Dedicated Internet LKPP 140 Mbps",
+            "Biznet Dedicated Internet LKPP 160 Mbps",
+            "Biznet Dedicated Internet LKPP 180 Mbps",
+            "Biznet Dedicated Internet LKPP 200 Mbps",
+            "Biznet Dedicated Internet LKPP 250 Mbps",
+            "Biznet Dedicated Internet LKPP 300 Mbps",
+            "Biznet Dedicated Internet LKPP 350 Mbps",
+            "Biznet Dedicated Internet LKPP 400 Mbps",
+            "Biznet Dedicated Internet LKPP 450 Mbps",
+            "Biznet Dedicated Internet LKPP 500 Mbps",
+            "Biznet Dedicated Internet LKPP 600 Mbps",
+            "Biznet Dedicated Internet LKPP 700 Mbps",
+            "Biznet Dedicated Internet LKPP 800 Mbps",
+            "Biznet Dedicated Internet LKPP 900 Mbps",
+            "Biznet Dedicated Internet LKPP 1 Gbps",
+            "Biznet Dedicated Internet LKPP 1.2 Gbps",
+            "Biznet Dedicated Internet LKPP 1.6 Mbps",
+            "Biznet Dedicated Internet LKPP 2 Gbps",
+            "Biznet Dedicated Internet LKPP 10 Gbps",
+            "100 Gigabit EtherPort BIX (100 Gbps)",
+            "10 Gigabit EtherPort BIX (10 Gbps)",
+            "1 Gigabit EtherPort BIX (1 Gbps)"
+        ];
+
+        const BENGKULU_REVENUE_MAP = {
+            "Biznet Metronet 1DS Rent": "1,200,000",
+            "Biznet Metronet 2DS Rent": "2,050,000",
+            "Biznet Metronet 3DS Rent": "3,300,000",
+            "Biznet Metronet 1DS": "1,150,000",
+            "Biznet Metronet 2DS": "2,000,000",
+            "Biznet Metronet 3DS": "3,250,000",
+            
+        };
+
+        // Function to check if current entry is Bengkulu condition
+        function isBengkulu(entryId) {
+            const region = document.getElementById(`region-${entryId}`).value;
+            const province = document.getElementById(`province-${entryId}`).value;
+            const branch = document.getElementById(`branch-${entryId}`).value;
+            return region === "RO 16 Jambi" && province === "Bengkulu" && branch === "Branch Bengkulu Jembatan Kecil";
+        }
 
         const BUNDLING_OPTIONS = ["2+1", "3+1", "6+2", "6+6", "8+4", "9+3", "12+5", "12+2",];
 
@@ -554,7 +684,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
         /**
          * Select role antara AC, AE, dan Store.
          * @param {number} entryId - ID entri yang akan diubah.
-         * @param {string} role - Role yang dipilih ('AC', 'AE', 'STORE').
+         * @param {string} role - Role yang dipilih ('AC', 'AE', 'Store').
          */
         function selectRole(entryId, role) {
             currentRole = role;
@@ -630,6 +760,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             const additionalFields = document.getElementById(`additional-fields-${entryId}`);
             const statusSelect = document.getElementById(`status-${entryId}`);
             const selectedStatus = statusSelect.value;
+            const bengkulu = isBengkulu(entryId);
 
             if (currentRole === 'AE') {
                 // Untuk AE, tambah Segmentation
@@ -655,7 +786,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
                     // Populate service dropdown
                     setTimeout(() => {
-                        populateDropdown(document.getElementById(`service-${entryId}`), SERVICE_OPTIONS, "Pilih Service...", "");
+                        const serviceOptions = bengkulu ? BENGKULU_SERVICE_OPTIONS : SERVICE_OPTIONS;
+                        populateDropdown(document.getElementById(`service-${entryId}`), serviceOptions, "Pilih Service...", "");
                         initializeSelect2(entryId);
                         $(`#service-${entryId}`).on('select2:select', () => updateRevenue(entryId));
                     }, 0);
@@ -710,7 +842,8 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
                 // Populate service and bundling dropdowns
                 setTimeout(() => {
-                    populateDropdown(document.getElementById(`service-${entryId}`), Object.keys(PRODUCT_PRICES), "Pilih Service...", "");
+                    const serviceKeys = bengkulu ? Object.keys(BENGKULU_PRODUCT_PRICES) : Object.keys(PRODUCT_PRICES);
+                    populateDropdown(document.getElementById(`service-${entryId}`), serviceKeys, "Pilih Service...", "");
                     populateDropdown(document.getElementById(`bundling-${entryId}`), BUNDLING_OPTIONS, "Pilih Bundling...", "");
 
                     // Add event listeners for revenue calculation
@@ -741,7 +874,7 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 const prospectInput = prospectGroup.querySelector('input');
                 if (prospectInput) prospectInput.required = false;
             } else {
-                // For AC, clear additional fields
+                // For AC, clear additional fields (no service dropdown for AC, even in Bengkulu)
                 additionalFields.innerHTML = '';
 
                 // Show all fields for AC
@@ -787,12 +920,15 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
                 serviceFormGroup.insertAdjacentHTML('afterend', revenueHtml);
 
                 const revenueInput = document.getElementById(`revenue-${entryId}`);
+                const bengkulu = isBengkulu(entryId);
+                const revenueMap = bengkulu ? BENGKULU_REVENUE_MAP : REVENUE_MAP;
+
                 if (selectedService.startsWith('Biznet Dedicated') || selectedService.includes('EtherPort')) {
                     revenueInput.value = '';
                     revenueInput.readOnly = false;
                     revenueInput.placeholder = 'Masukkan Revenue';
                 } else {
-                    revenueInput.value = REVENUE_MAP[selectedService] || '';
+                    revenueInput.value = revenueMap[selectedService] || '';
                     revenueInput.readOnly = true;
                 }
             }
@@ -809,9 +945,11 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
             const selectedService = serviceSelect.value;
             const selectedBundling = bundlingSelect.value;
+            const bengkulu = isBengkulu(entryId);
+            const prices = bengkulu ? BENGKULU_PRODUCT_PRICES : PRODUCT_PRICES;
 
             if (selectedService && selectedBundling) {
-                const price = PRODUCT_PRICES[selectedService];
+                const price = prices[selectedService];
                 const [first, second] = selectedBundling.split('+').map(Number);
                 let revenue;
                 if (selectedService.includes('Rent')) {
@@ -1183,12 +1321,18 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             const statusSelectForAdditional = newEntry.querySelector(`#status-${newId}`);
             statusSelectForAdditional.addEventListener('change', () => updateAdditionalFields(newId));
 
+            // Listener untuk branch change untuk update additional fields (for Bengkulu logic)
+            const branchSelectForAdditional = newEntry.querySelector(`#branch-${newId}`);
+            branchSelectForAdditional.addEventListener('change', () => updateAdditionalFields(newId));
+
             // Listener untuk role change untuk update sales dropdown
             const roleButtons = newEntry.querySelectorAll(`#ac-btn-${newId}, #ae-btn-${newId}, #store-btn-${newId}`);
             roleButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     // Update sales dropdown setelah role berubah
                     setTimeout(() => updateLocationDropdowns(newId, 'branch'), 0);
+                    // Update additional fields setelah role berubah
+                    setTimeout(() => updateAdditionalFields(newId), 0);
                 });
             });
 
