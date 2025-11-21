@@ -1370,6 +1370,10 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
 
             // Isi dropdown statis pada entri baru
             const regionSelect = newEntry.querySelector(`#region-${newId}`);
+            const provinceSelect = newEntry.querySelector(`#province-${newId}`);
+            const citySelect = newEntry.querySelector(`#city-${newId}`);
+            const branchSelect = newEntry.querySelector(`#branch-${newId}`);
+            const salesSelect = newEntry.querySelector(`#sales-${newId}`);
             const ispSelect = newEntry.querySelector(`#ispExisting-${newId}`);
             const sourceSelect = newEntry.querySelector(`#source-${newId}`);
             const statusSelect = newEntry.querySelector(`#status-${newId}`);
@@ -1392,6 +1396,38 @@ class="w-full py-4 px-4 bg-green-600 text-white font-bold text-base rounded-xl h
             const today = new Date().toISOString().split('T')[0];
             document.getElementById(`date-${newId}`).value = today;
 
+            // Copy data dari entri sebelumnya jika ada
+            if (entryCounter > 1) {
+                const lastId = entryCounter - 2;
+                const lastDate = document.getElementById(`date-${lastId}`).value;
+                const lastRegion = document.getElementById(`region-${lastId}`).value;
+                const lastProvince = document.getElementById(`province-${lastId}`).value;
+                const lastCity = document.getElementById(`city-${lastId}`).value;
+                const lastBranch = document.getElementById(`branch-${lastId}`).value;
+                const lastSales = document.getElementById(`sales-${lastId}`).value;
+
+                // Set date
+                document.getElementById(`date-${newId}`).value = lastDate;
+
+                // Set region dan update turunan
+                regionSelect.value = lastRegion;
+                updateLocationDropdowns(newId, 'region');
+
+                // Set province dan update turunan
+                provinceSelect.value = lastProvince;
+                updateLocationDropdowns(newId, 'province');
+
+                // Set city dan update turunan
+                citySelect.value = lastCity;
+                updateLocationDropdowns(newId, 'city');
+
+                // Set branch dan update turunan
+                branchSelect.value = lastBranch;
+                updateLocationDropdowns(newId, 'branch');
+
+                // Set sales
+                salesSelect.value = lastSales;
+            }
 
             // --- PERUBAHAN UTAMA: Tambahkan listener ke SEMUA input wajib ---
             // Listener untuk perubahan dropdown berjenjang (Region, Province, City, Branch)
